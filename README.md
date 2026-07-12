@@ -40,7 +40,7 @@ Add the following to your `vcpkg-configuration.json`
   "default-registry": {
     "kind": "git",
     "repository": "https://github.com/Microsoft/vcpkg",
-    "baseline": "84a143e4caf6b70db57f28d04c41df4a85c480fa"
+    "baseline": "xxx"
   },
   "registries": [
     {

@@ -1,32 +1,32 @@
 # 	See additional helpful variables in /docs/maintainers/vcpkg_common_definitions.md
 
-set(LIBROCKET_VERSION 1.3.0)
+set(LIBROCKET_VERSION 1.3.0.0)
 vcpkg_download_distfile(ARCHIVE
-  URLS "https://github.com/i8degrees/libRocket/archive/refs/tags/${LIBROCKET_VERSION}.zip"
-  SHA512 29853e60c00a8cc6a9e32e70c02c7bc479608bd6eabddc7d360dd6a732658d747751fed876886af3ecc669c92debc4c0fd4e46355f7947316b2a6a596f2c56ab
+  URLS "https://github.com/libRocket/libRocket/archive/refs/tags/release-${LIBROCKET_VERSION}.zip"
+  SHA512 0
   FILENAME "librocket-${LIBROCKET_VERSION}.zip"
 )
 
 vcpkg_extract_source_archive_ex(
-    OUT_SOURCE_PATH BASE_SOURCE_PATH
-    ARCHIVE "${ARCHIVE}"
-    REF 1.3.0
-    # (Optional) Read the docs for how to generate patches at:
-    # https://github.com/microsoft/vcpkg-docs/blob/main/vcpkg/examples/patching.md
-    # PATCHES
-    #   001_port_fixes.patch
-    #   002_more_port_fixes.patch
+  OUT_SOURCE_PATH BASE_SOURCE_PATH
+  ARCHIVE "${ARCHIVE}"
+  REF 1.3.0.0
+  PATCHES
+    001_backport-cmake-config.patch
+    002_remove-i386-osx-arch.patch
 )
 
+# FIXME: Feature selection is not yet supported
 vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
-    FEATURES
-    python          BUILD_PYTHON_BINDINGS=OFF
+  FEATURES
+  python          "BUILD_PYTHON_BINDINGS=ON"
 )
-set(PORT_DEBUG OFF)
+
 vcpkg_cmake_configure(
   SOURCE_PATH "${BASE_SOURCE_PATH}/Build"
     OPTIONS
       ${FEATURE_OPTIONS}
+      "-DBUILD_PYTHON_BINDINGS=OFF"
       "-DCMAKE_BUILD_TYPE=Release"
       "-DCMAKE_C_COMPILER=/usr/bin/clang"
       "-DCMAKE_CXX_COMPILER=/usr/bin/clang++"
@@ -36,24 +36,13 @@ vcpkg_cmake_configure(
       "-DBUILD_SAMPLES=OFF"
       #OPTIONS_RELEASE -DOPTIMIZE=2
 )
+
 vcpkg_cmake_install()
-vcpkg_cmake_config_fixup(
-  #PACKAGE_NAME libRocket
-  #CONFIG_PATH lib/librocket/cmake
-)
-
-file(MAKE_DIRECTORY "${CURRENT_PACKAGES_DIR}/debug/lib/libRocket/cmake")
-
-# Windows Debug metadata, symbols etc
+vcpkg_cmake_config_fixup(CONFIG_PATH lib/libRocket/cmake PACKAGE_NAME libRocket)
 vcpkg_copy_pdbs()
-
-#file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/share")
+file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/share")
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
-
-#file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/lib/libRocket" "${CURRENT_PACKAGES_DIR}/lib/libRocket")
-
-#file(INSTALL "${CMAKE_CURRENT_LIST_DIR}/vcpkg-cmake-wrapper.cmake" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
-#file(INSTALL "${CURRENT_PACKAGES_DIR}/libRocketConfig.cmake" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
+file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/lib/libRocket" "${CURRENT_PACKAGES_DIR}/lib/libRocket")
 
 vcpkg_install_copyright(FILE_LIST "${BASE_SOURCE_PATH}/readme.md")
 

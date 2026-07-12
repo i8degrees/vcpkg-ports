@@ -46,7 +46,7 @@ Add the following to your `vcpkg-configuration.json`
     {
       "kind": "git",
       "repository": "https://github.com/i8degrees/vcpkg-ports",
-      "baseline": "6bac9c7e72813e8d79d91dc53b13c0f8d22bd61f",
+      "baseline": "e9c2cd727241dddac5bd568a6f82ae0f7692597f",
       "packages": [ "librocket" ]
     }
   ]

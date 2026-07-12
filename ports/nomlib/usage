@@ -1,0 +1,18 @@
+
+nomlib provides CMake import targets:
+
+    find_package(nomlib CONFIG REQUIRED)
+    target_link_libraries(main
+      PRIVATE
+      nomlib-actions
+      nomlib-audio
+      nomlib-core
+      nomlib-file
+      nomlib-graphics
+      nomlib-gui
+      nomlib-math
+      nomlib-ptree
+      nomlib-serializers
+      nomlib-system
+    )
+

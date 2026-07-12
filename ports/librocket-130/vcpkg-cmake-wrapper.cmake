@@ -1,0 +1,5 @@
+
+find_path(libRocket_INCLUDE_DIR NAMES Core.h Controls.h Debugger.h PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/include" NO_DEFAULT_PATH)
+find_library(libRocket_LIBRARY_RELEASE NAMES libRocket PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/lib" NO_DEFAULT_PATH)
+find_library(libRocket_LIBRARY_DEBUG   NAMES libRocket PATHS "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/debug/lib" NO_DEFAULT_PATH)
+_find_package(${ARGS})

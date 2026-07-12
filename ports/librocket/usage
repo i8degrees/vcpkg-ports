@@ -1,0 +1,11 @@
+
+libRocket provides CMake import targets:
+
+    find_package(libRocket CONFIG REQUIRED)
+    target_link_libraries(main
+      PRIVATE
+      $<IF:$<TARGET_EXISTS:RocketCore>,RocketCore,RocketCore-static>
+      $<IF:$<TARGET_EXISTS:RocketControls>,RocketControls,RocketControls-static>
+      $<IF:$<TARGET_EXISTS:RocketDebugger>,RocketDebugger,RocketDebugger-static>
+    )
+

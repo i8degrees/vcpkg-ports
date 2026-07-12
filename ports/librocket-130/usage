@@ -1,0 +1,7 @@
+*WIP*
+
+libRocket provides CMake targets:
+
+    find_package(libRocket REUQIRED)
+    include_directories(${LIBROCKET_INCLUDE_DIR})
+    target_link_libraries(Controls Core Debugger)

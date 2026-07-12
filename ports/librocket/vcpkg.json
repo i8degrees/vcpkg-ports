@@ -1,11 +1,10 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
   "name": "librocket",
-  "version": "1.3.0.1",
-  "maintainers": "TODO",
+  "version": "1.3.0.0",
+  "port-version": 0,
   "description": "The HTML/CSS User Interface Library",
-  "homepage": "https://github.com/i8degrees/libRocket.git",
-  "documentation": "TODO",
+  "homepage": "https://github.com/libRocket/libRocket.git",
   "license": "MIT",
   "dependencies": [
     {
@@ -18,12 +17,6 @@
     }
   ],
   "features": {
-    "lua": {
-      "description": "Lua bindings",
-      "dependencies": [
-        "lua"
-      ]
-    },
     "python": {
       "description": "Python bindings",
       "dependencies": [

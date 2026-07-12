@@ -12,6 +12,22 @@ My private vcpkg registry for ports that have not been published [upstream][0].
     - [vcpkg: publish to a git repository](https://learn.microsoft.com/en-us/vcpkg/produce/publish-to-a-git-registry)
     - [vcpkg concepts: registries](https://learn.microsoft.com/en-us/vcpkg/concepts/registries)
 
+### development
+
+```shell
+vcpkg edit <port>
+```
+
+### testing
+
+```shell
+vcpkg install <port> --x-overlay-ports=$HOME/Projects/vcpkg-ports.git/ports
+```
+
+### versioning
+
+*WIP*
+
 ### adding registry
 
 Add the following to your `vcpkg-configuration.json`

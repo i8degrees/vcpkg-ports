@@ -10,6 +10,28 @@ My private vcpkg registry for ports that have not been published [upstream][0].
     - [vcpkg: publish to a git repository](https://learn.microsoft.com/en-us/vcpkg/produce/publish-to-a-git-registry)
     - [vcpkg concepts: registries](https://learn.microsoft.com/en-us/vcpkg/concepts/registries)
 
+### adding registry
+
+Add the following to your `vcpkg-configuration.json`
+
+```shell
+{
+  "default-registry": {
+    "kind": "git",
+    "repository": "https://github.com/Microsoft/vcpkg",
+    "baseline": "84a143e4caf6b70db57f28d04c41df4a85c480fa"
+  },
+  "registries": [
+    {
+      "kind": "git",
+      "repository": "https://github.com/i8degrees/vcpkg-ports",
+      "baseline": "6bac9c7e72813e8d79d91dc53b13c0f8d22bd61f",
+      "packages": [ "librocket" ]
+    }
+  ]
+}
+```
+
 ## related
 
 - https://github.com/i8degrees/nomlib.git

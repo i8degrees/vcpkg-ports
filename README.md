@@ -26,7 +26,9 @@ vcpkg install <port> --x-overlay-ports=$HOME/Projects/vcpkg-ports.git/ports
 
 ### versioning
 
-*WIP*
+```shell
+vcpkg --x-builtin-ports-root=./ports --x-builtin-registry-versions-dir=./versions x-add-version --all --verbose
+```
 
 ### adding registry
 

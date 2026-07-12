@@ -2,6 +2,8 @@
 
 My private vcpkg registry for ports that have not been published [upstream][0].
 
+    ports/librocket
+
 [0]: https://github.com/microsoft/vcpkg
 
 ## usage
@@ -16,6 +18,7 @@ Add the following to your `vcpkg-configuration.json`
 
 ```shell
 {
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg-configuration.schema.json",
   "default-registry": {
     "kind": "git",
     "repository": "https://github.com/Microsoft/vcpkg",

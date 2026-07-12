@@ -2,7 +2,8 @@
 
 My private vcpkg registry for ports that have not been published [upstream][0].
 
-    ports/librocket
+- ports
+    - `librocket` - v1.3.0.0 (upstream)
 
 [0]: https://github.com/microsoft/vcpkg
 
@@ -15,7 +16,7 @@ My private vcpkg registry for ports that have not been published [upstream][0].
 ### development
 
 ```shell
-vcpkg edit <port>
+vcpkg edit librocket --vcpkg-root .
 ```
 
 ### testing
@@ -55,6 +56,7 @@ Add the following to your `vcpkg-configuration.json`
 
 ## related
 
-- https://github.com/i8degrees/nomlib.git
-- https://github.com/i8degrees/ttcards.git
+- https://github.com/libRocket/libRocket.git (upstream)
+- https://github.com/i8degrees/nomlib.git (library)
+- https://github.com/i8degrees/ttcards.git (game)
 

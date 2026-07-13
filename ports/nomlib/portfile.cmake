@@ -13,8 +13,6 @@ vcpkg_extract_source_archive_ex(
   OUT_SOURCE_PATH SOURCE_PATH
     ARCHIVE "${ARCHIVE}"
     REF 0.13.1
-    #PATCHES
-    #"001_fixup-shared-library-macosx.patch"
 )
 
 # FIXME: Feature selection is not yet supported
@@ -27,11 +25,16 @@ vcpkg_cmake_configure(
   SOURCE_PATH "${SOURCE_PATH}"
     OPTIONS
       #${FEATURE_OPTIONS}
+      # FIXME(JEFF): This should never have to be touched
       "-DFETCHCONTENT_FULLY_DISCONNECTED=OFF"
       "-DBUILD_EXAMPLES=OFF"
       "-DBUILD_TESTS=OFF"
       "-DBUILD_DOCS=OFF"
       "-DDEBUG_ASSERT=ON"
+      # TODO(JEFF): This needs to be relocated to the feature options - 
+      # (see above)
+      "-DNOM_BUILD_AUDIO_UNIT=ON"
+      # FIXME(JEFF): Workaround for lack of NOM_EXPORT macros for audio unit
       "-DHIDE_SYMBOL_VISIBILITY=OFF"
       "-DCMAKE_C_COMPILER=/usr/bin/clang"
       "-DCMAKE_CXX_COMPILER=/usr/bin/clang++"
@@ -40,6 +43,8 @@ vcpkg_cmake_configure(
 )
 
 vcpkg_cmake_install()
+#vcpkg_cmake_config_fixup(CONFIG_PATH lib/cmake/nomlib PACKAGE_NAME nomlib)
+#vcpkg_fixup_pkgconfig()
 vcpkg_copy_pdbs()
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/share")
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")

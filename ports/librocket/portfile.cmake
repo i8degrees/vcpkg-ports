@@ -42,7 +42,7 @@ vcpkg_cmake_config_fixup(CONFIG_PATH lib/libRocket/cmake PACKAGE_NAME libRocket)
 vcpkg_copy_pdbs()
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/share")
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
-file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/lib/libRocket" "${CURRENT_PACKAGES_DIR}/lib/libRocket")
+file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/lib/libRocket")
 
 vcpkg_install_copyright(FILE_LIST "${BASE_SOURCE_PATH}/readme.md")
 

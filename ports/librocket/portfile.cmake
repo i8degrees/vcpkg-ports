@@ -28,8 +28,6 @@ vcpkg_cmake_configure(
       ${FEATURE_OPTIONS}
       "-DBUILD_PYTHON_BINDINGS=OFF"
       "-DCMAKE_BUILD_TYPE=Release"
-      "-DCMAKE_C_COMPILER=/usr/bin/clang"
-      "-DCMAKE_CXX_COMPILER=/usr/bin/clang++"
       "-DCMAKE_CXX_STANDARD=14"
       "-DCMAKE_CXX_STANDARD_REQUIRED=ON"
       "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"

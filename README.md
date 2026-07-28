@@ -13,6 +13,20 @@ My private vcpkg registry for ports that have not been published [upstream][0].
     - [vcpkg: handling usage files](https://learn.microsoft.com/en-us/vcpkg/maintainers/handling-usage-files)
     - [vcpkg: vcpkg.json platforms ref](https://learn.microsoft.com/en-us/vcpkg/reference/vcpkg-json#platform-expression)
 
+### export SDK
+
+**NOTE(JEFF):** This note assumes manifest mode and should be done at the
+top-level of the project with the `vcpkg.json` manifest.
+
+```shell
+# Package the installed dependencies in a zip archive at export.zip
+vcpkg export --output-dir=. --zip --output=export.zip
+```
+
+```shell
+CMAKE_TOOLCHAIN_FILE=./export/vcpkg/scripts/buildsystems/vcpkg.cmake
+```
+
 ### development
 
 ```shell

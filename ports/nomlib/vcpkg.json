@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
-  "port-version": 0,
+  "port-version": 1,
   "version-semver": "0.13.1",
   "name": "nomlib",
   "description": "C++11 game engine",
@@ -23,9 +23,7 @@
     {
       "name": "openal-soft",
       "version>=": "1.17.2",
-      "features": [
-        "pipewire"
-      ],
+      "features": [],
       "platform": "!osx & !windows"
     },
     {
@@ -38,7 +36,7 @@
       "name": "sdl2",
       "version>=": "2.0.4",
       "default-features": false,
-      "features": ["x11"],
+      "features": ["wayland"],
       "platform": "!osx & !windows"
     },
     {

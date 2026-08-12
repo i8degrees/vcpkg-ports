@@ -38,6 +38,7 @@ vcpkg_cmake_configure(
       "-DNOM_BUILD_AUDIO_UNIT=ON"
       # FIXME(JEFF): Workaround for lack of NOM_EXPORT macros for audio unit
       "-DHIDE_SYMBOL_VISIBILITY=OFF"
+      "-DNOM_INSTALL_GCDB=OFF"
 )
 
 vcpkg_cmake_install()

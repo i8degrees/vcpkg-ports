@@ -2,6 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
   "name": "nomlib",
   "version-semver": "0.13.1",
+  "port-version": 1,
   "maintainers": "Jeffrey Carpenter <1329364+i8degrees@users.noreply.github.com>",
   "description": "C++11 game engine",
   "homepage": "https://nomlib.479831.xyz/#",

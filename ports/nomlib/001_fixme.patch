@@ -1,0 +1,79 @@
+diff --git i/CMakeLists.txt w/CMakeLists.txt
+index bef8cc60..3f64756d 100644
+--- i/CMakeLists.txt
++++ w/CMakeLists.txt
+@@ -114,6 +114,7 @@ option( NOM_BUILD_GUI_UNIT "GUI subsystem" ON)
+ string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}" is_top_level)
+ option(NOM_INSTALL_CMAKE_PACKAGE "Install CMake export package for finding nomlib" "${is_top_level}")
+ option(NOM_INSTALL_PKGCONFIG_SUPPORT "Install pkg-config helper for finding nomlib" "${is_top_level}")
++option(nomlib_INSTALL_GCDB "gamecontroller_db vendor" OFF)
+ 
+ if(DEFINED nomlib_SHARED_LIBS)
+   set(BUILD_SHARED_LIBS "${nomlib_SHARED_LIBS}")
+diff --git i/src/packages/CMakeLists.txt w/src/packages/CMakeLists.txt
+index e6dc2bd6..af0a06d9 100644
+--- i/src/packages/CMakeLists.txt
++++ w/src/packages/CMakeLists.txt
+@@ -72,12 +72,20 @@ install(  FILES
+ install(  FILES
+           ${PROJECT_SOURCE_DIR}/README.md
+           ${PROJECT_SOURCE_DIR}/LICENSE.md
+-          # Install hardware definitions for input devices (game controllers)
+-          "${gcdb_SOURCE_DIR}/gamecontrollerdb.txt"
+           DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/nomlib"
+           COMPONENT Core
+         )
+ 
++if(nomlib_INSTALL_GCDB)
++  install(FILES
++    # Install hardware definitions for input devices (game controllers)
++    "${gcdb_SOURCE_DIR}/gamecontrollerdb.txt"
++    DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/nomlib"
++    OPTIONAL
++    COMPONENT Core
++  )
++endif()
++
+ install(FILES
+   "${CMAKE_CURRENT_BINARY_DIR}/nomlib.desktop"
+   DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/nomlib"
+diff --git i/vendor/CMakeLists.txt w/vendor/CMakeLists.txt
+index d7ab4524..99130bed 100644
+--- i/vendor/CMakeLists.txt
++++ w/vendor/CMakeLists.txt
+@@ -80,14 +80,18 @@ FetchContent_Declare(
+   PATCH_COMMAND   patch -i "${PATCHES_DIR}/rapidxml_bug16.patch"
+ )
+ 
+-set(GCDB_TAG "master")
+-set(GCDB_URL "https://github.com/mdqinc/SDL_GameControllerDB/archive/refs/heads/${GCDB_TAG}.zip")
+-set(GCDB_SHA512 "7e27f876a81da458473d219d48eaa3616140b85b931219e2c4cc2180ac9ff495ce58f33c8cac510ed95407d0b1e50675eb79f0ef348ac24bc144b8ba560e9c6f")
+-FetchContent_Declare(
+-  gamecontroller_db
+-  URL             "${GCDB_URL}"
+-  URL_HASH        "SHA512=${GCDB_SHA512}"
+-)
++if(nomlib_INSTALL_GCDB)
++  set(GCDB_TAG "master")
++  set(GCDB_URL "https://github.com/mdqinc/SDL_GameControllerDB/archive/refs/heads/${GCDB_TAG}.zip")
++  set(GCDB_SHA512 "7e27f876a81da458473d219d48eaa3616140b85b931219e2c4cc2180ac9ff495ce58f33c8cac510ed95407d0b1e50675eb79f0ef348ac24bc144b8ba560e9c6f")
++  FetchContent_Declare(
++    gamecontroller_db
++    URL             "${GCDB_URL}"
++    URL_HASH        "SHA512=${GCDB_SHA512}"
++  )
++
++  FetchContent_MakeAvailable(gamecontroller_db)
++endif()
+ 
+ #
+ ## build settings
+@@ -101,7 +105,7 @@ set(JSONCPP_WITH_POST_BUILD_UNITTEST OFF CACHE INTERNAL "prevent cache pollution
+ set(JSONCPP_WITH_PKGCONFIG_SUPPORT OFF CACHE INTERNAL "prevent cache pollution")
+ set(JSONCPP_WITH_CMAKE_PACKAGE OFF CACHE INTERNAL "prevent cache pollution")
+ 
+-FetchContent_MakeAvailable(jsoncpp tclap rapidxml gamecontroller_db)
++FetchContent_MakeAvailable(jsoncpp tclap rapidxml)
+ 
+ #
+ ## Internal env

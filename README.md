@@ -20,11 +20,24 @@ top-level of the project with the `vcpkg.json` manifest.
 
 ```shell
 # Package the installed dependencies in a zip archive at export.zip
-vcpkg export --output-dir=. --zip --output=export.zip
+## static library archives, .a|.dll.a
+vcpkg export --output-dir=. --zip --output=x64-mingw-static --host-triplet=x64-mingw-static
 ```
 
 ```shell
-CMAKE_TOOLCHAIN_FILE=./export/vcpkg/scripts/buildsystems/vcpkg.cmake
+## dynamic (shared) libraries, .dll|.lib|.dylib
+vcpkg export --output-dir=. --zip --output=x64-mingw-dynamic --host-triplet=x64-mingw-dynamic
+```
+
+```shell
+# specify the dependency input path (a dir) - existing vcpkg_installed
+# dir with vcpkg deps
+vcpkg export --zip --output-dir=. --host-triplet=x64-mingw-static --x-install-root=c:/temp/debug-win/vcpkg_installed
+```
+
+```shell
+# reuse 
+CMAKE_TOOLCHAIN_FILE=./x64-mingw-dynamic/vcpkg/scripts/buildsystems/vcpkg.cmake
 ```
 
 ### development

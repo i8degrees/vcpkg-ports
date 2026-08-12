@@ -1,17 +1,68 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
-  "port-version": 1,
-  "version-semver": "0.13.1",
   "name": "nomlib",
+  "version-semver": "0.13.1",
+  "maintainers": "Jeffrey Carpenter <1329364+i8degrees@users.noreply.github.com>",
   "description": "C++11 game engine",
-  "license": "BSD-2-Clause",
   "homepage": "https://nomlib.479831.xyz/#",
   "documentation": "https://nomlib.479831.xyz/docs/#",
-  "maintainers": [
-    "Jeffrey Carpenter <1329364+i8degrees@users.noreply.github.com>"
-  ],
-  "supports": "(osx & x64), (linux & x64), (windows & x86 & static)",
+  "license": "BSD-2-Clause",
+  "supports": "(osx & x64), ((linux & x64), (windows & x86 & static))",
+  "builtin-baseline": "44819aa2a6c10e56065e2b0330e7d6c89d1d2574",
   "dependencies": [
+    {
+      "name": "librocket",
+      "platform": "(osx & x64), ((linux & x64), (windows & x86 & static))",
+      "version>=": "1.3.0.0"
+    },
+    {
+      "name": "libsndfile",
+      "features": [
+        "external-libs"
+      ],
+      "platform": "(osx & x64), ((linux & x64), (windows & x86 & static))",
+      "version>=": "1.2.2"
+    },
+    {
+      "name": "openal-soft",
+      "platform": "!osx & !windows",
+      "version>=": "1.17.2"
+    },
+    {
+      "name": "openal-soft",
+      "platform": "windows & (x86 | x64)",
+      "version>=": "1.17.2"
+    },
+    {
+      "name": "sdl2",
+      "default-features": false,
+      "platform": "osx | windows",
+      "version>=": "2.0.4"
+    },
+    {
+      "name": "sdl2",
+      "default-features": false,
+      "features": [
+        "wayland"
+      ],
+      "platform": "!osx & !windows",
+      "version>=": "2.0.4"
+    },
+    {
+      "name": "sdl2-image",
+      "default-features": false,
+      "features": [
+        "tiff"
+      ],
+      "platform": "(osx & x64), ((linux & x64), (windows & x86 & static))",
+      "version>=": "2.0.1"
+    },
+    {
+      "name": "sdl2-ttf",
+      "default-features": false,
+      "platform": "(osx & x64), ((linux & x64), (windows & x86 & static))",
+      "version>=": "2.0.14"
+    },
     {
       "name": "vcpkg-cmake",
       "host": true
@@ -19,61 +70,6 @@
     {
       "name": "vcpkg-cmake-config",
       "host": true
-    },
-    {
-      "name": "openal-soft",
-      "version>=": "1.17.2",
-      "features": [],
-      "platform": "!osx & !windows"
-    },
-    {
-      "name": "openal-soft",
-      "version>=": "1.17.2",
-      "features": [],
-      "platform": "windows & (x86 | x64)"
-    },
-    {
-      "name": "sdl2",
-      "version>=": "2.0.4",
-      "default-features": false,
-      "features": ["wayland"],
-      "platform": "!osx & !windows"
-    },
-    {
-      "name": "librocket",
-      "version>=": "1.3.0.0",
-      "platform": "(osx & x64), (linux & x64), (windows & x86 & static)"
-    },
-    {
-      "name": "sdl2",
-      "version>=": "2.0.4",
-      "default-features": false,
-      "features": [],
-      "platform": "osx | windows"
-    },
-    {
-      "name": "sdl2-image",
-      "version>=": "2.0.1",
-      "default-features": false,
-      "features": [
-        "tiff"
-      ],
-      "platform": "(osx & x64), (linux & x64), (windows & x86 & static)"
-    },
-    {
-      "name": "sdl2-ttf",
-      "version>=": "2.0.14",
-      "platform": "(osx & x64), (linux & x64), (windows & x86 & static)",
-      "features": [],
-      "default-features": false
-    },
-    {
-      "name": "libsndfile",
-      "version>=": "1.2.2",
-      "features": [
-        "external-libs"
-      ],
-      "platform": "(osx & x64), (linux & x64), (windows & x86 & static)"
     }
   ],
   "overrides": [
@@ -93,6 +89,5 @@
       "name": "openal-soft",
       "version": "1.25.1#1"
     }
-  ],
-  "builtin-baseline": "44819aa2a6c10e56065e2b0330e7d6c89d1d2574"
+  ]
 }

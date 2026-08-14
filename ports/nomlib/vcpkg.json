@@ -8,7 +8,7 @@
   "homepage": "https://nomlib.479831.xyz/#",
   "documentation": "https://nomlib.479831.xyz/docs/#",
   "license": "BSD-2-Clause",
-  "supports": "(osx & x64), ((linux & x64), (windows & x86 & static))",
+  "supports": "(osx & x64), ((linux & x64), (windows & x64))",
   "builtin-baseline": "44819aa2a6c10e56065e2b0330e7d6c89d1d2574",
   "dependencies": [
     {

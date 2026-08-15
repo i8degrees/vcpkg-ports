@@ -28,17 +28,22 @@ vcpkg_cmake_configure(
     OPTIONS
       #${FEATURE_OPTIONS}
       # FIXME(JEFF): This should never have to be touched
+      # See also,
+      # 1. https://learn.microsoft.com/en-us/vcpkg/troubleshoot/build-failures#fetchcontent-dependency-is-not-found-during-build-process
       "-DFETCHCONTENT_FULLY_DISCONNECTED=OFF"
       "-DBUILD_EXAMPLES=OFF"
       "-DBUILD_TESTS=OFF"
       "-DBUILD_DOCS=OFF"
       "-DDEBUG_ASSERT=ON"
-      # TODO(JEFF): This needs to be relocated to the feature options - 
+      # TODO(JEFF): This needs to be relocated to the feature options -
       # (see above)
       "-DNOM_BUILD_AUDIO_UNIT=ON"
       # FIXME(JEFF): Workaround for lack of NOM_EXPORT macros for audio unit
       "-DHIDE_SYMBOL_VISIBILITY=OFF"
       "-DNOM_INSTALL_GCDB=OFF"
+      # FIXME(JEFF): Hopefully this issue is solved by a recent add to
+      # vendor/CMakeLists.txt -- `find_program(python3)`
+      "-DPython3_EXECUTABLE:PATH=C:/Python312/python.exe"
 )
 
 vcpkg_cmake_install()

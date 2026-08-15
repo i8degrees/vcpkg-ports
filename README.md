@@ -100,6 +100,18 @@ vcpkg install <port> --x-overlay-ports=$HOME/Projects/vcpkg-ports.git/ports
 vcpkg --x-builtin-ports-root=./ports --x-builtin-registry-versions-dir=./versions x-add-version --all --verbose
 ```
 
+#### port-version
+
+A version suffix distinguishing revisions to the packaging files. An integer.
+Defaults to `0`.
+
+The `port-version` should be incremented whenever a new version of the port
+is published that does not change the upstream source version. When the
+upstream source version is changed, the [version field][901] should change and
+the `port-version` should be reset to `0` (or removed).
+
+See [versioning][900] for more details.
+
 ### adding registry
 
 Add the following to your `vcpkg-configuration.json`
@@ -131,3 +143,5 @@ Add the following to your `vcpkg-configuration.json`
 
 [0]: https://github.com/microsoft/vcpkg
 [100]: https://vcpkg.io/en/packages
+[901]: https://learn.microsoft.com/en-us/vcpkg/reference/vcpkg-json#version
+[900]: https://learn.microsoft.com/en-us/vcpkg/users/versioning#version-schemes

@@ -5,7 +5,7 @@ set(NOM_VERSION 0.13.1)
 set(NOM_TAG "dev")
 vcpkg_download_distfile(ARCHIVE
   URLS "https://github.com/i8degrees/nomlib/archive/refs/heads/${NOM_TAG}.zip"
-  SHA512 "50c7857814255c2751a47ae82c3311b0709c23bc211ad84d2fb8dbe85adb7f5109685d464ce83d8268dc96cfe1580ec2e984ede8994d725ca41a7b60dab93826"
+  SHA512 "0c90ebf7fcf6232bec8dbb1288cb6026bd8b10d723f0098b7e7c3288f239b91d221c97daa7d3ba7d3961b6bbde7b595ff38e5aed95820abe52474bdc5c2dc8c9"
   FILENAME "nomlib_${NOM_VERSION}.zip"
 )
 
@@ -37,7 +37,7 @@ vcpkg_cmake_configure(
       "-DDEBUG_ASSERT=ON"
       # TODO(JEFF): This needs to be relocated to the feature options -
       # (see above)
-      "-DNOM_BUILD_AUDIO_UNIT=ON"
+      "-DNOM_BUILD_AUDIO_UNIT=OFF"
       # FIXME(JEFF): Workaround for lack of NOM_EXPORT macros for audio unit
       "-DHIDE_SYMBOL_VISIBILITY=OFF"
       "-DNOM_INSTALL_GCDB=OFF"

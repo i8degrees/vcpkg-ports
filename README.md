@@ -46,6 +46,10 @@ CMAKE_TOOLCHAIN_FILE=./x64-mingw-dynamic/vcpkg/scripts/buildsystems/vcpkg.cmake
 vcpkg edit librocket --vcpkg-root .
 ```
 
+### finding packages
+
+- [vcpkg.io][100]
+
 ### dependency trees
 
 ```shell
@@ -57,6 +61,28 @@ vcpkg depend-info nomlib --x-overlay-ports=/home/jeff/Projects/vcpkg-ports.git/p
 # Visual hierarchy of dependency tree for a port
 vcpkg depend-info <port-name> --format=tree
 #vcpkg depend-info nomlib --format=tree --x-overlay-ports=/home/jeff/Projects/vcpkg-ports.git/ports
+```
+
+### usage text
+
+**NOTE(JEFF):** This only works on M$ Windows as of this writing :-/
+
+```shell
+vcpkg print-usage <port>
+```
+
+### env
+
+**NOTE(JEFF):** This command is only applicable for when you are using vcpkg
+on the Windows platform.
+
+Initialize env similar to what is setup for you when you use the developer
+console on Windows; this shortcut is available once you have installed the
+**Visual Studio Build Tools**.
+
+```shell
+# similar to vcvarsall.bat
+vcpkg env
 ```
 
 ### testing
@@ -104,3 +130,4 @@ Add the following to your `vcpkg-configuration.json`
 - https://github.com/i8degrees/ttcards.git (game)
 
 [0]: https://github.com/microsoft/vcpkg
+[100]: https://vcpkg.io/en/packages

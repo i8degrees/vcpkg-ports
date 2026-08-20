@@ -5,7 +5,7 @@ set(NOM_VERSION 0.13.1)
 set(NOM_TAG "dev")
 vcpkg_download_distfile(ARCHIVE
   URLS "https://github.com/i8degrees/nomlib/archive/refs/heads/${NOM_TAG}.zip"
-  SHA512 "0c90ebf7fcf6232bec8dbb1288cb6026bd8b10d723f0098b7e7c3288f239b91d221c97daa7d3ba7d3961b6bbde7b595ff38e5aed95820abe52474bdc5c2dc8c9"
+  SHA512 "63d57e134911e0c8317389e0304a0ed731d3fbb7d32188aaab372cd106286158f87ee7eba1d1767f4f60b11c582a93ef24b95e88f3c9c6596b5365f8725e8b98"
   FILENAME "nomlib_${NOM_VERSION}.zip"
 )
 

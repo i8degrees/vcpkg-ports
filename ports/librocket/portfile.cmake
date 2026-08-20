@@ -27,7 +27,11 @@ vcpkg_cmake_configure(
     OPTIONS
       ${FEATURE_OPTIONS}
       "-DBUILD_PYTHON_BINDINGS=OFF"
-      "-DCMAKE_BUILD_TYPE=Release"
+      # FIXME(JEFF): We must use the DEBUG build configuration until we
+      # resolve a linking error related to the ROCKET_ASSERT macro function
+      # not being present when building on M$ Windows (x86_64). The fix will
+      # likely require rebuilding libRocket with another small patch.
+      "-DCMAKE_BUILD_TYPE=Debug"
       "-DCMAKE_CXX_STANDARD=14"
       "-DCMAKE_CXX_STANDARD_REQUIRED=ON"
       "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"

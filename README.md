@@ -94,6 +94,20 @@ vcpkg remove <port> --x-overlay-ports=$HOME/Projects/vcpkg-ports.git/ports
 vcpkg install <port> --x-overlay-ports=$HOME/Projects/vcpkg-ports.git/ports
 ```
 
+### validation of port manifest files
+
+After any modifications made to a port manifest -- `vcpkg.json` -- one should
+always validate the changes using the `format-manifest` command of `vcpkg`.
+
+```shell
+vcpkg format-manifest <port>
+# vcpkg format-manifest ports/librocket/vcpkg.json
+```
+
+This is a common error message and `vcpkg` should always warn you about doing
+this anytime the manifest file fails validation, such as when you are updating
+the port version.
+
 ### versioning
 
 ```shell

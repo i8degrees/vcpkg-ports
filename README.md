@@ -20,6 +20,8 @@ My private vcpkg registry for ports that have not been published [upstream][0].
 
 ### export SDK
 
+[vcpkg commands: export][901]
+
 **NOTE(JEFF):** This note assumes manifest mode and should be done at the
 top-level of the project with the `vcpkg.json` manifest.
 
@@ -54,6 +56,7 @@ vcpkg edit librocket --vcpkg-root .
 ### finding packages
 
 - [vcpkg.io][100]
+- [vcpkg.tunapri.com][101]
 
 ### dependency trees
 
@@ -70,7 +73,8 @@ vcpkg depend-info <port-name> --format=tree
 
 ### usage text
 
-**NOTE(JEFF):** This only works on M$ Windows as of this writing :-/
+**NOTE(JEFF):** This feature is now available on Linux as of
+`2026-07-27-98d7cb0cf1` (ish).
 
 ```shell
 vcpkg print-usage <port>
@@ -162,5 +166,7 @@ Add the following to your `vcpkg-configuration.json`
 
 [0]: https://github.com/microsoft/vcpkg
 [100]: https://vcpkg.io/en/packages
+[101]: https://vcpkg.tunapri.com/#pkg=
 [901]: https://learn.microsoft.com/en-us/vcpkg/reference/vcpkg-json#version
 [900]: https://learn.microsoft.com/en-us/vcpkg/users/versioning#version-schemes
+[901]: https://learn.microsoft.com/en-us/vcpkg/commands/export

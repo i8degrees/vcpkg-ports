@@ -4,6 +4,11 @@ My private vcpkg registry for ports that have not been published [upstream][0].
 
 - ports
     - `librocket` - v1.3.0.0 (upstream)
+    - `nomlib` - WIP (v0.13.x)
+
+- templates
+    - `vcpkg-configuration.json.tmpl`
+    - `vcpkg.json.tmpl`
 
 ## usage
 

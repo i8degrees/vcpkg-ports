@@ -1,0 +1,18 @@
+# vcpkg Dependency & Custom Registry Instructions
+
+## Dependency Management Rules
+- This project uses **vcpkg Manifest Mode**. Never run bare `vcpkg install <pkg>` commands; always declare dependencies in `vcpkg.json`.
+- Registry routing is configured in `vcpkg-configuration.json` next to `vcpkg.json`.
+
+## Adding a Package from Our Custom Registry
+When adding an internal or custom package:
+1. Add the dependency name to `"dependencies"` in `vcpkg.json`.
+2. **Explicitly list the package name** inside the `"packages"` array of the custom registry entry in `vcpkg-configuration.json`. If omitted, vcpkg will fall back to the public Microsoft registry and fail to find the package.
+3. If updating to a newer version of a custom port, update the `"baseline"` commit SHA in `vcpkg-configuration.json` to match the target commit of the custom registry repository.
+
+## Building & Resolving Dependencies
+- Trigger dependency installation via CMake configure (using the vcpkg toolchain) rather than manual CLI installs:
+  ```bash
+  cmake --preset <preset-name>
+  ```
+- **Authentication:** Our custom registry is hosted on a private Git repository. If `vcpkg` fails with a Git authentication or clone error, do not alter the registry URL to use hardcoded tokens; rely on the environment's configured Git credential helper / SSH agent.

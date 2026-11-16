@@ -9,6 +9,7 @@ My private vcpkg registry for ports that have not been published [upstream][0].
 - templates
     - `vcpkg-configuration.json.tmpl`
     - `vcpkg.json.tmpl`
+    - `consumer.md.tmpl`
 
 ## usage
 

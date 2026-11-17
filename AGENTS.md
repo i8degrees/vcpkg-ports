@@ -79,10 +79,21 @@ Before finalizing port changes, verify installation and dependency resolution us
   ```bash
   vcpkg print-usage <port-name> --x-overlay-ports=./ports
   ```
+  - if `vcpkg print-usage` is an invalid command, the system vcpkg repo may
+  need to be updated to the latest (master) branch. The `VCPKG_ROOT` env must
+  be set to a valid path and git must be present. ALWAYS confirm with the 
+  user to perform this upgrade before doing so. Run `bootstrap-vcpkg.sh` or
+  `bootstrap-vcpkg.ps1` after performing a successful upgrade -- this is 
+  indicated by an exit code of `0` after the `git pull` AND bootstrap 
+  command.
+
 - **Developer Tips**:
     ```bash
     vcpkg edit <port-name>  --vcpkg-root .
     ```
+
+- After a port in this repo is updated but before it is commited, update
+update `docs/dependency_tree.md` to reflect the stale dependency tree(s).
 
 ## Consumer Templates & New Ports
 

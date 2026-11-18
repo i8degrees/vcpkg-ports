@@ -1,0 +1,32 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 2aa1879..909432d 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -109,7 +109,7 @@ project(nomlib
+   DESCRIPTION "C++11 2D game framework using SDL2"
+   HOMEPAGE_URL "https://github.com/i8degrees/nomlib"
+   #SPDX_LICENSE "BSD-2-Clause-FreeBSD"
+-  LANGUAGES CXX
++  LANGUAGES CXX C
+ )
+ 
+ 
+diff --git a/vendor/CMakeLists.txt b/vendor/CMakeLists.txt
+index 3640b1e..c197e1a 100644
+--- a/vendor/CMakeLists.txt
++++ b/vendor/CMakeLists.txt
+@@ -127,10 +127,10 @@ FetchContent_MakeAvailable(jsoncpp tclap rapidxml)
+ #
+ # These filesystem paths are resulting from the configuration executed above
+ 
+-set(JSONCPP_SOURCE_DIR "${CMAKE_BINARY_DIR}/_deps/jsoncpp-src/dist" CACHE PATH "jsoncpp source tree")
+-set(JSONCPP_INCLUDE_DIR "${CMAKE_BINARY_DIR}/_deps/jsoncpp-src/dist" CACHE PATH "jsoncpp headers tree")
+-set(TCLAP_INCLUDE_DIR "${CMAKE_BINARY_DIR}/_deps/tclap-src/include" CACHE PATH "tclap headers tree")
+-set(RAPIDXML_INCLUDE_DIR "${CMAKE_BINARY_DIR}/_deps/rapidxml-src" CACHE PATH "rapidxml headers tree")
++set(JSONCPP_SOURCE_DIR "${jsoncpp_SOURCE_DIR}/dist" CACHE PATH "jsoncpp source tree")
++set(JSONCPP_INCLUDE_DIR "${jsoncpp_SOURCE_DIR}/dist" CACHE PATH "jsoncpp headers tree")
++set(TCLAP_INCLUDE_DIR "${tclap_SOURCE_DIR}/include" CACHE PATH "tclap headers tree")
++set(RAPIDXML_INCLUDE_DIR "${rapidxml_SOURCE_DIR}" CACHE PATH "rapidxml headers tree")
+ set(gcdb_SOURCE_DIR "${CMAKE_BINARY_DIR}/_deps/gamecontroller_db-src" CACHE PATH "SDL_gamecontrollerDB source tree")
+ 
+ if(BUILD_TESTS)

@@ -82,9 +82,9 @@ vcpkg_cmake_configure(
       "-DBUILD_TESTS=OFF"
       "-DBUILD_DOCS=OFF"
       "-DDEBUG_ASSERT=ON"
-      "-DNOM_BUILD_AUDIO_UNIT=OFF"
       "-DHIDE_SYMBOL_VISIBILITY=OFF"
       "-DNOM_INSTALL_GCDB=OFF"
+      "-DNOM_USE_CCACHE=ON"
 )
 
 vcpkg_cmake_install()

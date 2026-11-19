@@ -325,3 +325,12 @@ prefab/
 pythonenv3.8/
 .venv/
 
+
+#################################
+# AI Hidden Runtime & Scratchpad
+#################################
+
+.agent/observations/
+.agent/memory/
+.agent/security/
+

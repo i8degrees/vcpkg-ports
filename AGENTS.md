@@ -107,6 +107,10 @@ update `docs/dependency_tree.md` to reflect the stale dependency tree(s).
 - patches should be minimized and upstreamed where possible, and kept next to
 the port's `portfile.cmake` with deterministic names.
 
+- Always save observations at `.agent/observations`
+- Always save security findings at `.agent/security`
+- Always save build artifact logs at `.agent/build`
+
 ## Before committing checklist
 
 - format manifest

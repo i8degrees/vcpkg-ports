@@ -8,18 +8,18 @@
 #   manifest as reference / consumer-test metadata; vcpkg ignores them when
 #   nomlib is consumed as a dependency.
 
-set(NOM_VERSION 0.13.1)
-set(NOM_TAG "dev")
+set(NOM_VERSION 0.14.0)
+set(NOM_TAG "v0.14.0")
 vcpkg_download_distfile(ARCHIVE
-  URLS "https://github.com/i8degrees/nomlib/archive/refs/heads/${NOM_TAG}.zip"
-  SHA512 "d490f7b3ccb26d7506816b662b3a8e1e6361a268b411d75cf13b40411d7eae8a637e7c40cff97251dc270bf35136f511ee188a29b0f3068d4fce262aa4cd481a"
+  URLS "https://github.com/i8degrees/nomlib/archive/refs/tags/${NOM_TAG}.zip"
+  SHA512 "076f99df0cf60a41f9ab396f9a1b0961437f9a19a3d5eb781b082d57733292e2297d6b9fed0a36a5264bb6c649105659501e1b1d0ac1b9ea1b39206b2cc0dac4"
   FILENAME "nomlib_${NOM_VERSION}.zip"
 )
 
 vcpkg_extract_source_archive_ex(
   OUT_SOURCE_PATH SOURCE_PATH
     ARCHIVE "${ARCHIVE}"
-    REF 0.13.1
+    REF 0.14.0
     PATCHES
       001_vcpkg_fixes.patch
 )

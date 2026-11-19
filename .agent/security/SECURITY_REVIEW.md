@@ -25,13 +25,13 @@ No credential leaks, secrets, `execute_process` injections, or `eval`-like const
 | 3 | ✅ Fixed | nomlib | Hardcoded Windows Python path removed | `portfile.cmake` |
 | 4 | 🟢 Low | nomlib | `version>=` minima are low/redundant | `vcpkg.json:17,25,30,35,41,50,59,65` |
 | 5 | 🟠 High | nomlib | `overrides`/`builtin-baseline` inert in port manifest | `vcpkg.json:12,76-93` |
-| 6 | 🟠 High | librocket | Debug build forced for every triplet | `portfile.cmake:30-40` |
+| 6 | 🟡 Medium | librocket | Debug build forced only on Windows | `portfile.cmake:29-45` |
 | 7 | ✅ Fixed | nomlib | CMake config fixup enabled | `portfile.cmake:90-98` |
 | 8 | ✅ Fixed | nomlib | `usage` `nomlib-audio` is now built | `portfile.cmake`, `usage` |
 | 9 | 🟡 Medium | nomlib | Platform expressions contradict `supports` | `vcpkg.json:11,16,24,58,64` |
 | 10 | ✅ Fixed | librocket | Version DB repaired with port-version 2 | `versions/l-/librocket.json`, `baseline.json` |
 | 11 | 🟡 Medium | librocket | `python` feature is a no-op | `vcpkg.json:23-29`, `portfile.cmake:19-28` |
-| 12 | 🟡 Medium | librocket | `vcpkg-cmake-wrapper.cmake` is dead code | `vcpkg-cmake-wrapper.cmake`, `portfile.cmake:52` |
+| 12 | ✅ Fixed | librocket | Dead `vcpkg-cmake-wrapper.cmake` removed | `ports/librocket/` |
 | 13 | ✅ Fixed | librocket | `usage` now lists correct targets and include dirs | `usage:5-14` |
 | 14 | ✅ Fixed | nomlib | Dead `001_fixme.patch` removed | `ports/nomlib/` |
 | 15 | ✅ Fixed | nomlib | `fixme.md` removed | `ports/nomlib/` |
@@ -54,7 +54,7 @@ No credential leaks, secrets, `execute_process` injections, or `eval`-like const
 | 3 | **nomlib hardcodes `C:/Python312/python.exe`** *(fixed)* | Previously set a concrete Windows path. Now removed; CMake's `FindPython3` resolves from PATH. | No further action. |
 | 4 | **nomlib `version>=` minima are low/redundant** | All current upstream dependencies (`librocket`, `libsndfile`, `openal-soft`, `sdl2`, `sdl2-image`, `sdl2-ttf`) use the `version` (relaxed) scheme, so the `version>=` strings parse and compare correctly. They are simply far below the versions shipped by modern baselines. They are not ignored (ports can declare transitive version constraints), but they are currently harmless. | Keep if documenting minimum supported versions; remove if you prefer to rely on the registry baseline. |
 | 5 | **nomlib `overrides`/`builtin-baseline` are inert** | Per vcpkg docs, baselines and overrides only apply in top-level consumer manifests; they are ignored from ports consumed as dependencies. The installed `openal-soft` version (`1.25.1#2`) matched the active registry baseline, not the port's `overrides` entry (`1.25.1#1`). | Remove `builtin-baseline` and `overrides` from `ports/nomlib/vcpkg.json`; document intended versions in a consumer template if necessary. |
-| 6 | **librocket forces Debug builds for every triplet** | `-DCMAKE_BUILD_TYPE=Debug` is appended after vcpkg's per-config value; CMake last-`-D`-wins → Release triplets install Debug artifacts (`libRocketCore_d.a`). | Remove the global override; patch the underlying `ROCKET_ASSERT` issue instead. |
+| 6 | **librocket forces Debug builds for every triplet** *(partially fixed)* | The global `-DCMAKE_BUILD_TYPE=Debug` is now scoped to Windows only (`VCPKG_TARGET_IS_WINDOWS`). Linux and macOS triplets now receive proper `Release`/Debug artifacts. The Windows override remains as a workaround for a `ROCKET_ASSERT` macro linking issue. Remove it once that issue is patched upstream. | No further action on Linux/macOS; revisit when Windows is built. |
 | 7 | **nomlib disables CMake config fixup** *(fixed)* | `vcpkg_cmake_config_fixup` is now enabled; configs are installed under `share/nomlib`. Broken `nomlib.pc` files are removed because upstream's `Requires.private` lists vendored deps without `.pc` files. `find_package(nomlib CONFIG REQUIRED)` verified in both static and dynamic consumers. | No further action. |
 
 ## Medium findings
@@ -65,7 +65,7 @@ No credential leaks, secrets, `execute_process` injections, or `eval`-like const
 | 9 | **nomlib platform expressions contradict `supports`** | `supports` includes `windows & x64`, but required deps are gated to `windows & x86 & static`; `windows & x64` resolves then fails configure. | Align dependency platforms with `supports`; remove dead x86 clauses. |
 | 10 | **librocket version DB mutated in place** *(fixed)* | `baseline.json` now points at `librocket` `1.3.0.0#2`, matching the current committed tree, and `x-add-version` was run without `--overwrite-version`. The stale `#1` entry remains historical. | No further action (or clean out stale `#1` if desired). |
 | 11 | **librocket `python` feature is a no-op** | Feature depends on removed `python2`; `-DBUILD_PYTHON_BINDINGS=OFF` defeats `vcpkg_check_features`. | Remove the feature or fix the binding build. |
-| 12 | **librocket wrapper is dead code** | `vcpkg-cmake-wrapper.cmake` is never installed and uses wrong names/paths. | Delete it. |
+| 12 | **librocket wrapper is dead code** *(fixed)* | `vcpkg-cmake-wrapper.cmake` has been deleted; it was never installed. | No further action. |
 | 13 | **librocket `usage` is incomplete** *(fixed)* | Now references the real targets `RocketCore`, `RocketControls`, `RocketDebugger` and documents `${libRocket_INCLUDE_DIRS}`. A CMake consumer project with the new `usage` text links successfully. | No further action. |
 
 ## Low findings
@@ -82,6 +82,6 @@ No credential leaks, secrets, `execute_process` injections, or `eval`-like const
 ## Recommended fix order
 
 1. Clean up nomlib manifest metadata (`overrides`, `builtin-baseline`, platform expressions).
-2. Fix librocket Debug override (`-DCMAKE_BUILD_TYPE=Debug`).
-3. Remove librocket dead code / broken feature (`vcpkg-cmake-wrapper.cmake`, `python` feature).
-4. Fix template `$schema` typo.
+2. Remove the broken `python` feature from `librocket`.
+3. Fix template `$schema` typo.
+4. Revisit Windows-only `librocket` Debug override once the `ROCKET_ASSERT` linking issue is patched.

@@ -123,8 +123,8 @@ nomlib
 
 ## Overall verdict
 
-`librocket` builds and installs on `x64-linux`, but still ships Debug artifacts for Release triplets (`-DCMAKE_BUILD_TYPE=Debug` override) and retains some dead/broken metadata.
+`librocket` builds and installs on `x64-linux`. The `-DCMAKE_BUILD_TYPE=Debug` override is now scoped to Windows only (`VCPKG_TARGET_IS_WINDOWS`) as a workaround for a `ROCKET_ASSERT` linking issue; Linux/macOS produce proper Release/Debug artifacts. The unused `vcpkg-cmake-wrapper.cmake` has been removed.
 
 `nomlib` is now pinned to immutable `v0.14.0`, builds cleanly on both `x64-linux` and `x64-linux-dynamic`, and `find_package(nomlib CONFIG REQUIRED)` works for the exported targets.
 
-**Recommended fix order:** fix librocket Debug override, then remove librocket dead code (`python` feature, `vcpkg-cmake-wrapper.cmake`), then clean up remaining nomlib manifest metadata and template typo.
+**Recommended fix order:** remove the broken `python` feature from librocket, clean up remaining nomlib manifest metadata, fix template `$schema` typo, then revisit the Windows-only `librocket` Debug override once the `ROCKET_ASSERT` issue is patched.

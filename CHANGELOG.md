@@ -36,7 +36,9 @@ All notable changes to this custom vcpkg registry will be documented in this fil
 ### Port fixes — `librocket`
 - Fixed `usage` file to reference the real exported CMake targets (`RocketCore`, `RocketControls`, `RocketDebugger`) instead of non-existent `*-static` aliases, and documented the `libRocket_INCLUDE_DIRS` variable.
 - Repaired the `versions/` database by bumping `librocket` to port-version 2 so the baseline points at the current committed tree.
-- Rebuilt and verified `librocket:x64-linux@1.3.0.0#2`; CMake consumer project links successfully.
+- Scoped the `-DCMAKE_BUILD_TYPE=Debug` override to Windows only, with a FIXME referencing the `ROCKET_ASSERT` macro linking issue. Linux/macOS now produce proper Release/Debug artifacts.
+- Deleted the unused `vcpkg-cmake-wrapper.cmake`.
+- Rebuilt and verified `librocket:x64-linux@1.3.0.0#3`; CMake consumer project links successfully and `lib/` contains `libRocketCore.a` instead of `libRocketCore_d.a`.
 
 ### Documentation
 - `AGENTS.md`: reviewed and tightened port workflow guidance.

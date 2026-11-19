@@ -16,6 +16,14 @@ nomlib provides CMake import targets:
       nomlib-system
     )
 
+    If you need to force a particular linkage, request the `static` or `shared`
+    component when calling find_package:
+
+        find_package(nomlib CONFIG REQUIRED COMPONENTS static)
+
+    When neither component is requested, nomlib follows `BUILD_SHARED_LIBS` by
+    picking shared targets when available and falling back to static targets.
+
 NOTE: The installed `nomlib.pc` pkg-config file is supplied as-is by the
 upstream build system and is currently incomplete / assumed broken. It leaks
 absolute paths, uses semicolon separators, and lists vendored dependencies

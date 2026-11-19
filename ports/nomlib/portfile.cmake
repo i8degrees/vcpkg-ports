@@ -88,8 +88,14 @@ vcpkg_cmake_configure(
 )
 
 vcpkg_cmake_install()
-#vcpkg_cmake_config_fixup(CONFIG_PATH lib/cmake/nomlib PACKAGE_NAME nomlib)
-#vcpkg_fixup_pkgconfig()
+# upstream nomlib.pc lists vendored deps (rapidxml, jsoncpp, ...) that have no
+# pkg-config files of their own, so vcpkg_fixup_pkgconfig cannot validate it.
+# Remove the broken .pc files; consumers should use the CMake import targets.
+file(REMOVE_RECURSE
+  "${CURRENT_PACKAGES_DIR}/lib/pkgconfig"
+  "${CURRENT_PACKAGES_DIR}/debug/lib/pkgconfig"
+)
+vcpkg_cmake_config_fixup(CONFIG_PATH lib/cmake/nomlib PACKAGE_NAME nomlib)
 vcpkg_copy_pdbs()
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/share")
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")

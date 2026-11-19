@@ -5,18 +5,23 @@
 
 **NOTE:** The information contained herein was generated using
 `vcpkg depend-info <nomlib|librocket> --x-overlay-ports=$HOME/Projects/vcpkg-ports.git/ports`.
+Last updated: 2026-11-18.
 
 ## librocket
 
 ```shell
-vcpkg-cmake:
-vcpkg-cmake-config:
-librocket: vcpkg-cmake, vcpkg-cmake-config
+vcpkg depend-info librocket --format=tree --x-overlay-ports=./ports
+
+librocket
++-- vcpkg-cmake
++-- vcpkg-cmake-config
 ```
 
 ## nomlib
 
 ```shell
+vcpkg depend-info nomlib --format=tree --x-overlay-ports=./ports
+
 nomlib
 +-- librocket
 |   +-- vcpkg-cmake
@@ -52,36 +57,6 @@ nomlib
 |   +-- fmt
 |   |   +-- vcpkg-cmake
 |   |   +-- vcpkg-cmake-config
-|   +-- pipewire
-|   |   +-- glib
-|   |   |   +-- dirent
-|   |   |   +-- gettext
-|   |   |   |   +-- gettext-libintl
-|   |   |   |   |   +-- vcpkg-make
-|   |   |   |   |       +- ...
-|   |   |   |   +-- libiconv
-|   |   |   |       +-- vcpkg-make
-|   |   |   |           +- ...
-|   |   |   +-- gettext-libintl
-|   |   |   |   +- ...
-|   |   |   +-- libffi
-|   |   |   |   +-- vcpkg-cmake-get-vars
-|   |   |   |   |   +- ...
-|   |   |   |   +-- vcpkg-make
-|   |   |   |       +- ...
-|   |   |   +-- libiconv
-|   |   |   |   +- ...
-|   |   |   +-- pcre2
-|   |   |   |   +-- vcpkg-cmake
-|   |   |   |   +-- vcpkg-cmake-config
-|   |   |   +-- vcpkg-tool-meson
-|   |   |   |   +-- vcpkg-cmake-get-vars
-|   |   |   |       +- ...
-|   |   |   +-- zlib
-|   |   |       +-- vcpkg-cmake
-|   |   |       +-- vcpkg-cmake-config
-|   |   +-- vcpkg-tool-meson
-|   |       +- ...
 |   +-- vcpkg-cmake
 |   +-- vcpkg-cmake-config
 +-- sdl2
@@ -112,7 +87,8 @@ nomlib
 |   |   |   |   +-- vcpkg-cmake-config
 |   |   |   +-- vcpkg-get-python-packages
 |   |   |   +-- vcpkg-tool-meson
-|   |   |   |   +- ...
+|   |   |   |   +-- vcpkg-cmake-get-vars
+|   |   |   |       +- ...
 |   |   |   +-- zstd
 |   |   |       +-- vcpkg-cmake
 |   |   |       +-- vcpkg-cmake-config
@@ -125,13 +101,21 @@ nomlib
 |   |   +-- vcpkg-cmake
 |   |   +-- vcpkg-cmake-config
 |   |   +-- zlib
-|   |       +- ...
+|   |       +-- vcpkg-cmake
+|   |       +-- vcpkg-cmake-config
 |   +-- sdl2
 |   |   +- ...
 |   +-- tiff
 |   |   +-- libjpeg-turbo
+|   |   |   +-- libspng
+|   |   |   |   +-- vcpkg-cmake
+|   |   |   |   +-- vcpkg-cmake-config
+|   |   |   |   +-- zlib
+|   |   |   |       +- ...
 |   |   |   +-- vcpkg-cmake
 |   |   |   +-- vcpkg-cmake-config
+|   |   |   +-- zlib
+|   |   |       +- ...
 |   |   +-- liblzma
 |   |   |   +- ...
 |   |   +-- vcpkg-cmake
@@ -160,4 +144,3 @@ nomlib
 +-- vcpkg-cmake
 +-- vcpkg-cmake-config
 ```
-

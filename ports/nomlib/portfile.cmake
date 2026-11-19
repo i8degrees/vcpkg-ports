@@ -1,4 +1,12 @@
 # 	See additional helpful variables in /docs/maintainers/vcpkg_common_definitions.md
+#
+# Note on vcpkg.json metadata:
+# - The dependency `version>=` constraints were removed because every current
+#   upstream dependency uses the `version` (relaxed) scheme; the minima were
+#   valid but far below baseline versions and never constrained resolution.
+# - `builtin-baseline` and `overrides` are intentionally kept in the port
+#   manifest as reference / consumer-test metadata; vcpkg ignores them when
+#   nomlib is consumed as a dependency.
 
 set(NOM_VERSION 0.13.1)
 set(NOM_TAG "dev")

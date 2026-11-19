@@ -4,7 +4,7 @@
 # dependency trees
 
 **NOTE:** The information contained herein was generated using
-`vcpkg depend-info <nomlib|librocket> --x-overlay-ports=$HOME/Projects/vcpkg-ports.git/ports`.
+`vcpkg depend-info <nomlib|librocket> --format=tree --x-overlay-ports=$HOME/Projects/vcpkg-ports.git/ports`.
 Last updated: 2026-11-18.
 
 ## librocket
@@ -71,7 +71,7 @@ nomlib
 |   |   |   +-- libcap
 |   |   |   |   +-- vcpkg-cmake-get-vars
 |   |   |   |   |   +- ...
-|   |   |   |   +-- vcpkg-make
+|   |   |   +-- vcpkg-make
 |   |   |   |       +- ...
 |   |   |   +-- liblzma
 |   |   |   |   +-- vcpkg-cmake
@@ -87,7 +87,7 @@ nomlib
 |   |   |   |   +-- vcpkg-cmake-config
 |   |   |   +-- vcpkg-get-python-packages
 |   |   |   +-- vcpkg-tool-meson
-|   |   |   |   +-- vcpkg-cmake-get-vars
+|   |   |   |   +- ...
 |   |   |   |       +- ...
 |   |   |   +-- zstd
 |   |   |       +-- vcpkg-cmake

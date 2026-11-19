@@ -16,12 +16,26 @@ All notable changes to this custom vcpkg registry will be documented in this fil
   - `versions/l-/librocket.json` baseline points at `#0` while a newer `#1` entry exists.
 - No credential leaks, secrets, or injection vectors were found in the port files.
 
+### Port fixes — `nomlib`
+- Fixed fresh-install failure caused by drifting `dev` branch SHA512.
+- Pre-populated upstream FetchContent dependencies (`jsoncpp`, `tclap`, `rapidxml`) via `vcpkg_download_distfile` so the port builds with vcpkg's hermetic `FETCHCONTENT_FULLY_DISCONNECTED=ON` default.
+- Added upstream patches to use FetchContent-provided source directories and to enable C language for CMake `check_c_source_compiles`.
+- Removed hardcoded `C:/Python312/python.exe`; CMake's `FindPython3` resolves from PATH.
+- Removed stale `001_fixme.patch` and `fixme.md`.
+- Re-enabled `NOM_BUILD_AUDIO_UNIT` so `libnomlib-audio` is produced.
+- Added `-DNOM_USE_CCACHE=ON` to the configure options.
+- Added a note to `ports/nomlib/usage` documenting the incomplete/broken `nomlib.pc`.
+- Bumped `nomlib` port-version to 5 and updated `versions/`.
+- Verified builds:
+  - `x64-linux` (static) — success
+  - `x64-linux-dynamic` (shared) — success
+
 ### Documentation
 - `AGENTS.md`: reviewed and tightened port workflow guidance.
   - Added `vcpkg.json` `$schema` recommendation.
   - Clarified when a new port must be listed in `templates/vcpkg-configuration.json.tmpl`.
-- `SECURITY_REVIEW.md`: added repository-level security review results (table format).
-- `observations.md`: added audit findings and build/usage verification notes (table format).
+- `SECURITY_REVIEW.md`: added repository-level security review results (table format); updated after `nomlib` fixes.
+- `observations.md`: added audit findings and build/usage verification notes (table format); updated after `nomlib` fixes.
 
 ### Templates
 - Added `"$schema"` to `templates/vcpkg-configuration.json.tmpl` and `templates/vcpkg.json.tmpl` for validation and editor support.

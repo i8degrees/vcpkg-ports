@@ -58,7 +58,7 @@ x `vcpkg print-usage` is **not a valid command** in the vcpkg build used; checkl
 - Installed to: `share/nomlib/usage`.
 - Targets exported: `nomlib-actions`, `nomlib-audio`, `nomlib-core`, `nomlib-file`, `nomlib-graphics`, `nomlib-gui`, `nomlib-math`, `nomlib-ptree`, `nomlib-serializers`, `nomlib-system`.
 - `nomlib-audio` is now built (audio unit re-enabled in portfile) and appears in both static (`libnomlib-audio.a`) and dynamic (`libnomlib-audio.so`) installs.
-- CMake config files are still located under `lib/cmake/nomlib` instead of `share/nomlib`; config fixup remains disabled.
+- CMake config files are now installed under `share/nomlib` via `vcpkg_cmake_config_fixup`; broken `nomlib.pc` files are removed.
 
 ## Findings
 
@@ -78,10 +78,10 @@ x `vcpkg print-usage` is **not a valid command** in the vcpkg build used; checkl
 | # | Severity | Finding | Evidence / location | Fix |
 |---|----------|---------|---------------------|-----|
 | N1 | 🔴 Critical | Moving `dev` branch pin already drifted | `portfile.cmake:5-8` pins `refs/heads/dev.zip` with SHA512 `63d57e13…`; reviewer measured current dev at `d490f7b3…` | Pin a release tag or commit-id archive; update SHA512 |
-| N2 | 🟠 High | `version>=` minima are scheme-incompatible | `vcpkg.json:17,25,30,35,41,50,59,65` use legacy `version-string` minima; baseline versions are `relaxed` | Remove `version>=` or use matching schemes |
+| N2 | ✅ Fixed | `version>=` minima were redundant | `vcpkg.json` had low `version>=` minima; all upstream deps use `version` scheme, so constraints never affected resolution | Removed `version>=` constraints; rely on registry baseline |
 | N3 | ✅ Fixed | Hardcoded Windows Python path | `portfile.cmake` set `C:/Python312/python.exe` | Removed; CMake's `FindPython3` resolves from PATH |
 | N4 | ✅ Fixed | Vendored deps fetched at build time | Upstream `vendor/CMakeLists.txt` FetchContent for `jsoncpp`, `tclap`, `rapidxml`; `gamecontroller_db` uses `master` branch | Pre-populate via `vcpkg_download_distfile` and patch to use `${jsoncpp_SOURCE_DIR}` etc. |
-| N5 | 🟠 High | CMake/PkgConfig files not fixed up | `portfile.cmake` has both helpers commented out; configs in `lib/cmake`, `.pc` has absolute paths | Enable `vcpkg_cmake_config_fixup` and `vcpkg_fixup_pkgconfig` |
+| N5 | ✅ Fixed | CMake config files not fixed up | `portfile.cmake` had `vcpkg_cmake_config_fixup` commented out; configs were in `lib/cmake` | Enabled fixup; configs now under `share/nomlib`; broken `.pc` files removed |
 | N6 | ✅ Fixed | `usage` advertised `nomlib-audio` (not built) | `usage:8` vs `-DNOM_BUILD_AUDIO_UNIT=OFF` | Removed `-DNOM_BUILD_AUDIO_UNIT=OFF`; `libnomlib-audio` now built |
 | N7 | 🟡 Medium | Platform expressions contradict `supports` | `vcpkg.json:11` supports `windows & x64`; deps at `:16,24,58,64` gated to `windows & x86 & static` | Align dep platforms with `supports`; remove x86-only clauses |
 | N8 | 🟢 Low | Linux `sdl2` drops X11 | `vcpkg.json:43-51` installs `sdl2` with `features: ["wayland"]` and `default-features: false` | Add `x11` feature or keep defaults; document intent |
@@ -93,7 +93,7 @@ x `vcpkg print-usage` is **not a valid command** in the vcpkg build used; checkl
 | # | Severity | Finding | Evidence / location | Fix |
 |---|----------|---------|---------------------|-----|
 | V1 | 🟡 Medium | librocket baseline out of sync | `versions/l-/librocket.json` has `#0` and `#1`; `baseline.json` points at `#0` | Regenerate `versions/` with `x-add-version`; do not `--overwrite-version` published entries |
-| V2 | 🟡 Medium | nomlib overrides/baseline are inert | `vcpkg.json:12,76-93` contains `builtin-baseline` and `overrides` inside a port manifest | Remove fields; document validated versions elsewhere |
+| V2 | 🟢 Low | nomlib overrides/baseline are inert (kept as reference) | `vcpkg.json` contains `builtin-baseline` and `overrides` inside a port manifest; vcpkg ignores them when consuming nomlib as a dependency | Kept as reference/consumer-test metadata; rationale recorded in `portfile.cmake` comment |
 
 ## Security / supply-chain notes
 

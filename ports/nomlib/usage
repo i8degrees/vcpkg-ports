@@ -16,3 +16,9 @@ nomlib provides CMake import targets:
       nomlib-system
     )
 
+NOTE: The installed `nomlib.pc` pkg-config file is supplied as-is by the
+upstream build system and is currently incomplete / assumed broken. It leaks
+absolute paths, uses semicolon separators, and lists vendored dependencies
+that are not resolvable by pkg-config. Use the CMake import targets above
+instead.
+

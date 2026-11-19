@@ -29,10 +29,10 @@ No credential leaks, secrets, `execute_process` injections, or `eval`-like const
 | 7 | ✅ Fixed | nomlib | CMake config fixup enabled | `portfile.cmake:90-98` |
 | 8 | ✅ Fixed | nomlib | `usage` `nomlib-audio` is now built | `portfile.cmake`, `usage` |
 | 9 | 🟡 Medium | nomlib | Platform expressions contradict `supports` | `vcpkg.json:11,16,24,58,64` |
-| 10 | 🟡 Medium | librocket | Version DB mutated in place | `versions/l-/librocket.json`, `baseline.json` |
+| 10 | ✅ Fixed | librocket | Version DB repaired with port-version 2 | `versions/l-/librocket.json`, `baseline.json` |
 | 11 | 🟡 Medium | librocket | `python` feature is a no-op | `vcpkg.json:23-29`, `portfile.cmake:19-28` |
 | 12 | 🟡 Medium | librocket | `vcpkg-cmake-wrapper.cmake` is dead code | `vcpkg-cmake-wrapper.cmake`, `portfile.cmake:52` |
-| 13 | 🟡 Medium | librocket | `usage` omits include dirs / wrong targets | `usage:4-10` |
+| 13 | ✅ Fixed | librocket | `usage` now lists correct targets and include dirs | `usage:5-14` |
 | 14 | ✅ Fixed | nomlib | Dead `001_fixme.patch` removed | `ports/nomlib/` |
 | 15 | ✅ Fixed | nomlib | `fixme.md` removed | `ports/nomlib/` |
 | 16 | 🟢 Low | nomlib | Debug asserts forced into release artifacts | `portfile.cmake:37` |
@@ -63,10 +63,10 @@ No credential leaks, secrets, `execute_process` injections, or `eval`-like const
 |---|---------|----------|-----|
 | 8 | **nomlib `usage` advertises `nomlib-audio`** *(fixed)* | `usage` lists `nomlib-audio`; `-DNOM_BUILD_AUDIO_UNIT=OFF` has been removed and `libnomlib-audio` is now built. | No further action. |
 | 9 | **nomlib platform expressions contradict `supports`** | `supports` includes `windows & x64`, but required deps are gated to `windows & x86 & static`; `windows & x64` resolves then fails configure. | Align dependency platforms with `supports`; remove dead x86 clauses. |
-| 10 | **librocket version DB mutated in place** | `versions/l-/librocket.json` has `#0` and `#1` entries with rewritten trees; `baseline.json` still points at `#0`. | Stop using `--overwrite-version`; re-add historical trees or bump `port-version`. |
+| 10 | **librocket version DB mutated in place** *(fixed)* | `baseline.json` now points at `librocket` `1.3.0.0#2`, matching the current committed tree, and `x-add-version` was run without `--overwrite-version`. The stale `#1` entry remains historical. | No further action (or clean out stale `#1` if desired). |
 | 11 | **librocket `python` feature is a no-op** | Feature depends on removed `python2`; `-DBUILD_PYTHON_BINDINGS=OFF` defeats `vcpkg_check_features`. | Remove the feature or fix the binding build. |
 | 12 | **librocket wrapper is dead code** | `vcpkg-cmake-wrapper.cmake` is never installed and uses wrong names/paths. | Delete it. |
-| 13 | **librocket `usage` is incomplete** | References non-existent `*-static` targets and omits required `${libRocket_INCLUDE_DIRS}`. | Simplify targets and document the include variable. |
+| 13 | **librocket `usage` is incomplete** *(fixed)* | Now references the real targets `RocketCore`, `RocketControls`, `RocketDebugger` and documents `${libRocket_INCLUDE_DIRS}`. A CMake consumer project with the new `usage` text links successfully. | No further action. |
 
 ## Low findings
 
@@ -82,5 +82,6 @@ No credential leaks, secrets, `execute_process` injections, or `eval`-like const
 ## Recommended fix order
 
 1. Clean up nomlib manifest metadata (`overrides`, `builtin-baseline`, platform expressions).
-2. Fix librocket Debug override and registry version DB.
-3. Remove dead code, committed logs, and template typos.
+2. Fix librocket Debug override (`-DCMAKE_BUILD_TYPE=Debug`).
+3. Remove librocket dead code / broken feature (`vcpkg-cmake-wrapper.cmake`, `python` feature).
+4. Fix template `$schema` typo.

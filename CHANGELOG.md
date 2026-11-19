@@ -24,8 +24,9 @@ All notable changes to this custom vcpkg registry will be documented in this fil
 - Removed stale `001_fixme.patch` and `fixme.md`.
 - Re-enabled `NOM_BUILD_AUDIO_UNIT` so `libnomlib-audio` is produced.
 - Added `-DNOM_USE_CCACHE=ON` to the configure options.
-- Added a note to `ports/nomlib/usage` documenting the incomplete/broken `nomlib.pc`.
-- Bumped `nomlib` port-version to 5 and updated `versions/`.
+- Added a note to `ports/nomlib/usage` documenting the incomplete/broken `nomlib.pc` and added `static`/`shared` component guidance.
+- Enabled `vcpkg_cmake_config_fixup(CONFIG_PATH lib/cmake/nomlib PACKAGE_NAME nomlib)` so `nomlibConfig.cmake` is installed under `share/nomlib`; removed broken `nomlib.pc` files.
+- Bumped `nomlib` port-version to 6 and updated `versions/`.
 - Verified builds:
   - `x64-linux` (static) — success
   - `x64-linux-dynamic` (shared) — success

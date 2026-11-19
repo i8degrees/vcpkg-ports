@@ -23,10 +23,10 @@ No credential leaks, secrets, `execute_process` injections, or `eval`-like const
 | 1 | 🔴 Critical | nomlib | Moving `dev` branch pin already drifted | `portfile.cmake:5-8` |
 | 2 | ✅ Fixed | nomlib | Vendor FetchContent deps now pre-populated | `portfile.cmake` |
 | 3 | ✅ Fixed | nomlib | Hardcoded Windows Python path removed | `portfile.cmake` |
-| 4 | 🟠 High | nomlib | `version>=` minima are scheme-incompatible | `vcpkg.json:17,25,30,35,41,50,59,65` |
+| 4 | 🟢 Low | nomlib | `version>=` minima are low/redundant | `vcpkg.json:17,25,30,35,41,50,59,65` |
 | 5 | 🟠 High | nomlib | `overrides`/`builtin-baseline` inert in port manifest | `vcpkg.json:12,76-93` |
 | 6 | 🟠 High | librocket | Debug build forced for every triplet | `portfile.cmake:30-40` |
-| 7 | 🟠 High | nomlib | CMake config fixup disabled | `portfile.cmake:50-51` |
+| 7 | ✅ Fixed | nomlib | CMake config fixup enabled | `portfile.cmake:90-98` |
 | 8 | ✅ Fixed | nomlib | `usage` `nomlib-audio` is now built | `portfile.cmake`, `usage` |
 | 9 | 🟡 Medium | nomlib | Platform expressions contradict `supports` | `vcpkg.json:11,16,24,58,64` |
 | 10 | 🟡 Medium | librocket | Version DB mutated in place | `versions/l-/librocket.json`, `baseline.json` |
@@ -52,10 +52,10 @@ No credential leaks, secrets, `execute_process` injections, or `eval`-like const
 | # | Finding | Evidence | Fix |
 |---|---------|----------|-----|
 | 3 | **nomlib hardcodes `C:/Python312/python.exe`** *(fixed)* | Previously set a concrete Windows path. Now removed; CMake's `FindPython3` resolves from PATH. | No further action. |
-| 4 | **nomlib `version>=` minima are scheme-incompatible** | Minima (`2.0.4`, `2.0.1`, `2.0.14`, `1.17.2`) are `version-string` only; modern baseline versions are `relaxed`, causing manifest-mode resolution failures. | Remove `version>=` or express minima in the same scheme. |
-| 5 | **nomlib `overrides`/`builtin-baseline` are inert** | These fields only apply in top-level consumer manifests; they give false guarantees inside a port manifest. | Remove them and document validated versions elsewhere. |
+| 4 | **nomlib `version>=` minima are low/redundant** | All current upstream dependencies (`librocket`, `libsndfile`, `openal-soft`, `sdl2`, `sdl2-image`, `sdl2-ttf`) use the `version` (relaxed) scheme, so the `version>=` strings parse and compare correctly. They are simply far below the versions shipped by modern baselines. They are not ignored (ports can declare transitive version constraints), but they are currently harmless. | Keep if documenting minimum supported versions; remove if you prefer to rely on the registry baseline. |
+| 5 | **nomlib `overrides`/`builtin-baseline` are inert** | Per vcpkg docs, baselines and overrides only apply in top-level consumer manifests; they are ignored from ports consumed as dependencies. The installed `openal-soft` version (`1.25.1#2`) matched the active registry baseline, not the port's `overrides` entry (`1.25.1#1`). | Remove `builtin-baseline` and `overrides` from `ports/nomlib/vcpkg.json`; document intended versions in a consumer template if necessary. |
 | 6 | **librocket forces Debug builds for every triplet** | `-DCMAKE_BUILD_TYPE=Debug` is appended after vcpkg's per-config value; CMake last-`-D`-wins → Release triplets install Debug artifacts (`libRocketCore_d.a`). | Remove the global override; patch the underlying `ROCKET_ASSERT` issue instead. |
-| 7 | **nomlib disables CMake config fixup** | `vcpkg_cmake_config_fixup` and `vcpkg_fixup_pkgconfig` are commented out; configs live in `lib/cmake` (not searched by vcpkg) and `.pc` files contain absolute paths. | Enable both helpers; verify `find_package(nomlib CONFIG REQUIRED)` in a consumer. |
+| 7 | **nomlib disables CMake config fixup** *(fixed)* | `vcpkg_cmake_config_fixup` is now enabled; configs are installed under `share/nomlib`. Broken `nomlib.pc` files are removed because upstream's `Requires.private` lists vendored deps without `.pc` files. `find_package(nomlib CONFIG REQUIRED)` verified in both static and dynamic consumers. | No further action. |
 
 ## Medium findings
 

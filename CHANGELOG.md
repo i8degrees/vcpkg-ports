@@ -26,7 +26,8 @@ All notable changes to this custom vcpkg registry will be documented in this fil
 - Added `-DNOM_USE_CCACHE=ON` to the configure options.
 - Added a note to `ports/nomlib/usage` documenting the incomplete/broken `nomlib.pc` and added `static`/`shared` component guidance.
 - Enabled `vcpkg_cmake_config_fixup(CONFIG_PATH lib/cmake/nomlib PACKAGE_NAME nomlib)` so `nomlibConfig.cmake` is installed under `share/nomlib`; removed broken `nomlib.pc` files.
-- Bumped `nomlib` port-version to 6 and updated `versions/`.
+- Dropped redundant `version>=` constraints from dependencies. All current upstream dependencies use the `version` (relaxed) scheme, so the minima were valid but far below baseline versions and never constrained resolution; removing them avoids unused metadata. `builtin-baseline` and `overrides` were kept in the port manifest as reference/consumer-test metadata (they are ignored when nomlib is consumed as a dependency).
+- Bumped `nomlib` port-version to 7 and updated `versions/`.
 - Verified builds:
   - `x64-linux` (static) — success
   - `x64-linux-dynamic` (shared) — success

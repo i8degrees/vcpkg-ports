@@ -89,10 +89,11 @@ vcpkg_cmake_configure(
       "-DBUILD_EXAMPLES=OFF"
       "-DBUILD_TESTS=OFF"
       "-DBUILD_DOCS=OFF"
-      "-DDEBUG_ASSERT=ON"
       "-DHIDE_SYMBOL_VISIBILITY=OFF"
       "-DNOM_INSTALL_GCDB=OFF"
       "-DNOM_USE_CCACHE=ON"
+    OPTIONS_DEBUG
+      "-DDEBUG_ASSERT=ON"
 )
 
 vcpkg_cmake_install()

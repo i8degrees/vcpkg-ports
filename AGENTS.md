@@ -24,7 +24,7 @@ published upstream.
 Whenever creating, updating, or fixing a port in `ports/<port-name>/`, execute these steps in exact order:
 
 1. **Edit Port Files**: Update `vcpkg.json` and `portfile.cmake` inside `ports/<port-name>/`.
-    - Prefer adding `"$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json"` to `vcpkg.json` for validation and editor support.
+    - Prefer adding `"$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json"` to `vcpkg.json` (and consumer templates) for validation and editor support. Check that the URL does not end in `.json.json`.
 2. **Manage Versioning Rules**:
    - If the upstream source version changes: update `version` (or `version-semver` / `version-date`) in `vcpkg.json` and remove `port-version` (or reset it to `0`).
    - If only packaging files (`portfile.cmake`, patches, dependencies) change: keep `version` unchanged and increment `port-version` by `1`.

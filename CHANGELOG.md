@@ -54,4 +54,4 @@ All notable changes to this custom vcpkg registry will be documented in this fil
 
 ### Templates
 - Added `"$schema"` to `templates/vcpkg-configuration.json.tmpl` and `templates/vcpkg.json.tmpl` for validation and editor support.
-- Note: both template files still have a typo — `vcpkg.schema.json.json` (doubled `.json`) — which should be fixed before use.
+- Fixed the doubled `.json` typo in `templates/vcpkg-configuration.json.tmpl` and `templates/vcpkg.json.tmpl` (`vcpkg.schema.json.json` → `vcpkg.schema.json`).

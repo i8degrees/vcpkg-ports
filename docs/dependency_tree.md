@@ -5,7 +5,7 @@
 
 **NOTE:** The information contained herein was generated using
 `vcpkg depend-info <nomlib|librocket> --format=tree --x-overlay-ports=$HOME/Projects/vcpkg-ports.git/ports`.
-Last updated: 2026-11-18.
+Last updated: 2026-11-19.
 
 ## librocket
 
@@ -87,7 +87,7 @@ nomlib
 |   |   |   |   +-- vcpkg-cmake-config
 |   |   |   +-- vcpkg-get-python-packages
 |   |   |   +-- vcpkg-tool-meson
-|   |   |   |   +- ...
+|   |   |   |   +-- vcpkg-cmake-get-vars
 |   |   |   |       +- ...
 |   |   |   +-- zstd
 |   |   |       +-- vcpkg-cmake

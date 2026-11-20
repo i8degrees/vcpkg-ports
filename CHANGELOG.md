@@ -12,7 +12,7 @@ All notable changes to this custom vcpkg registry will be documented in this fil
   - `nomlib` pins a moving `dev` branch whose SHA512 has already drifted (fixed).
   - `nomlib` re-enables `FETCHCONTENT_FULLY_DISCONNECTED=OFF`, allowing build-time network fetches (fixed: deps pre-populated).
   - `librocket` forces `-DCMAKE_BUILD_TYPE=Debug` globally (partially fixed: now Windows-only workaround for a `ROCKET_ASSERT` linking issue).
-  - `nomlib` manifest contains inert `overrides`/`builtin-baseline` and redundant `version>=` constraints (`version>=` removed; `overrides`/`builtin-baseline` kept as reference).
+  - `nomlib` manifest contained inert `overrides`/`builtin-baseline` and redundant `version>=` constraints; now fully removed and documented in `templates/vcpkg.json.tmpl`.
   - `versions/l-/librocket.json` baseline points at `#0` while a newer `#1` entry exists (fixed: baseline now at `#3`).
 - No credential leaks, secrets, or injection vectors were found in the port files.
 
@@ -24,9 +24,12 @@ All notable changes to this custom vcpkg registry will be documented in this fil
 - Removed stale `001_fixme.patch` and `fixme.md`.
 - Re-enabled `NOM_BUILD_AUDIO_UNIT` so `libnomlib-audio` is produced.
 - Added `-DNOM_USE_CCACHE=ON` to the configure options.
-- Added a note to `ports/nomlib/usage` documenting the incomplete/broken `nomlib.pc` and added `static`/`shared` component guidance.
+- Removed the portfile comment that recorded the obsolete rationale for keeping `builtin-baseline`/`overrides` in the port manifest.
 - Enabled `vcpkg_cmake_config_fixup(CONFIG_PATH lib/cmake/nomlib PACKAGE_NAME nomlib)` so `nomlibConfig.cmake` is installed under `share/nomlib`; removed broken `nomlib.pc` files.
-- Dropped redundant `version>=` constraints from dependencies. All current upstream dependencies use the `version` (relaxed) scheme, so the minima were valid but far below baseline versions and never constrained resolution; removing them avoids unused metadata. `builtin-baseline` and `overrides` were kept in the port manifest as reference/consumer-test metadata (they are ignored when nomlib is consumed as a dependency). Recorded the rationale as a comment in `ports/nomlib/portfile.cmake` (vcpkg rejects comments and unknown fields in `vcpkg.json`).
+- Dropped redundant `version>=` constraints from dependencies. All current upstream dependencies use the `version` (relaxed) scheme, so the minima were valid but far below baseline versions and never constrained resolution; removing them avoids unused metadata.
+- Removed inert `builtin-baseline` and `overrides` from `ports/nomlib/vcpkg.json` and moved them to `templates/vcpkg.json.tmpl` so intended transitive-dependency versions are documented for consumer projects instead of being silently ignored by vcpkg.
+- Aligned `librocket`, `libsndfile`, `sdl2-image`, and `sdl2-ttf` dependency `platform` expressions with `nomlib.supports` (`windows & x64` instead of the previous impossible `windows & x86 & static` gate).
+- Bumped `nomlib` `port-version` to `1`.
 - Refreshed `docs/dependency_tree.md` with current overlay-port dependency trees.
 - Bumped `nomlib` upstream version to `0.14.0` (tagged release), replacing the moving `dev` branch pin. Updated source URL, SHA512, and reset `port-version` to `0`.
 - Re-verified builds:

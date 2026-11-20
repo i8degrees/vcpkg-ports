@@ -5,7 +5,7 @@ This document synthesizes outputs from `scout` (`local://scout-findings.md`) and
 
 > **Update 2026-11-18:** `nomlib` port has been fixed and now builds from a clean cache on both `x64-linux` (static) and `x64-linux-dynamic` triplets. Upstream was bumped from the moving `dev` branch to the `v0.14.0` tag. See changelog/commits for details.
 >
-> **Update 2026-11-19:** `AGENTS.md` refreshed (fixed nomlib version label, `$schema` URL typo, usage-check guidance, and persistence rules). `librocket` Debug build override scoped to Windows only; dead `vcpkg-cmake-wrapper.cmake` removed; `librocket:x64-linux-dynamic` builds and produces `.so` libraries; port-version bumped to `3`.
+> **Update 2026-11-19:** `AGENTS.md` refreshed (fixed nomlib version label, `$schema` URL typo, usage-check guidance, and persistence rules). `librocket` Debug build override scoped to Windows only; dead `vcpkg-cmake-wrapper.cmake` removed; `librocket:x64-linux-dynamic` builds and produces `.so` libraries; port-version bumped to `3`. `nomlib` manifest cleaned: removed inert `builtin-baseline`/`overrides` from port manifest (intended versions now in `templates/vcpkg.json.tmpl`); aligned `librocket`/`libsndfile`/`sdl2-image`/`sdl2-ttf` platform expressions with `nomlib.supports`; port-version bumped to `1`.
 
 ## Repo overview
 
@@ -88,7 +88,7 @@ nomlib
 | N4 | ✅ Fixed | Vendored deps fetched at build time | Upstream `vendor/CMakeLists.txt` FetchContent for `jsoncpp`, `tclap`, `rapidxml`; `gamecontroller_db` uses `master` branch | Pre-populate via `vcpkg_download_distfile` and patch to use `${jsoncpp_SOURCE_DIR}` etc. |
 | N5 | ✅ Fixed | CMake config files not fixed up | `portfile.cmake` had `vcpkg_cmake_config_fixup` commented out; configs were in `lib/cmake` | Enabled fixup; configs now under `share/nomlib`; broken `.pc` files removed |
 | N6 | ✅ Fixed | `usage` advertised `nomlib-audio` (not built) | `usage:8` vs `-DNOM_BUILD_AUDIO_UNIT=OFF` | Removed `-DNOM_BUILD_AUDIO_UNIT=OFF`; `libnomlib-audio` now built |
-| N7 | 🟡 Medium | Platform expressions contradict `supports` | `vcpkg.json:11` supports `windows & x64`; deps at `:16,24,58,64` gated to `windows & x86 & static` | Align dep platforms with `supports`; remove x86-only clauses |
+| N7 | ✅ Fixed | Platform expressions contradict `supports` | `vcpkg.json:11` supports `windows & x64`; deps at `:16,24,58,64` gated to `windows & x86 & static` | Aligned dep platforms with `supports`; removed x86-only clauses |
 | N8 | 🟢 Low | Linux `sdl2` drops X11 | `vcpkg.json:43-51` installs `sdl2` with `features: ["wayland"]` and `default-features: false` | Add `x11` feature or keep defaults; document intent |
 | N9 | 🟢 Low | Debug asserts forced into release | `portfile.cmake` `-DDEBUG_ASSERT=ON` | Scope to `OPTIONS_DEBUG` or remove |
 | N10 | ✅ Fixed | `fixme.md` leaks local paths | `ports/nomlib/fixme.md:2-25` contained `/home/jeff/…` absolute paths | Deleted |
@@ -98,7 +98,7 @@ nomlib
 | # | Severity | Finding | Evidence / location | Fix |
 |---|----------|---------|---------------------|-----|
 | V1 | 🟡 Medium | librocket baseline out of sync | `versions/l-/librocket.json` has `#0` and `#1`; `baseline.json` points at `#0` | Regenerate `versions/` with `x-add-version`; do not `--overwrite-version` published entries |
-| V2 | 🟢 Low | nomlib overrides/baseline are inert (kept as reference) | `vcpkg.json` contains `builtin-baseline` and `overrides` inside a port manifest; vcpkg ignores them when consuming nomlib as a dependency | Kept as reference/consumer-test metadata; rationale recorded in `portfile.cmake` comment |
+| V2 | ✅ Fixed | nomlib overrides/baseline removed from port manifest | `vcpkg.json` contained `builtin-baseline` and `overrides` inside a port manifest; vcpkg ignores them when consuming nomlib as a dependency | Removed; intended versions documented in `templates/vcpkg.json.tmpl` |
 
 ## Security / supply-chain notes
 
@@ -132,4 +132,4 @@ nomlib
 
 `nomlib` is now pinned to immutable `v0.14.0`, builds cleanly on both `x64-linux` and `x64-linux-dynamic`, and `find_package(nomlib CONFIG REQUIRED)` works for the exported targets.
 
-**Recommended fix order:** remove the broken `python` feature from librocket, clean up remaining nomlib manifest metadata, fix template `$schema` typo, then revisit the Windows-only `librocket` Debug override once the `ROCKET_ASSERT` issue is patched.
+**Recommended fix order:** remove the broken `python` feature from librocket, fix template `$schema` typo, then revisit the Windows-only `librocket` Debug override once the `ROCKET_ASSERT` issue is patched.

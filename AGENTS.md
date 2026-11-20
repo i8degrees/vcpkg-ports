@@ -60,12 +60,11 @@ Before finalizing port changes, verify installation and dependency resolution us
   vcpkg remove <port-name> --recurse --x-overlay-ports=./ports
   vcpkg install <port-name> --x-overlay-ports=./ports
   ```
-  - possibly with `--editable` as well, i.e.:
-  `vcpkg remove <port-name> --recurse --editable --x-overlay-ports=./ports`
-
+  - For faster iterative port edits, install with `--editable`:
+    `vcpkg install <port-name> --editable --x-overlay-ports=./ports --triplet=<triplet>`
   - always clear `buildtrees/` and `packages/` when the port hash does not
-  change, but one or more patches of a port are modified -- otherwise,
-  reinstall can be no-op.
+    change, but one or more patches of a port are modified -- otherwise,
+    reinstall can be no-op.
 
 - **CI / Pre-Submission Smoke Test Guidance**:
     - always build the triplet you intend to ship, i.e.:
@@ -122,6 +121,7 @@ These are the intended supported triplets; individual ports may not be regularly
 - When adding a brand-new port to `ports/`, add its name to `templates/vcpkg-configuration.json.tmpl` in the `"packages"` array if the registry is consumed as a vcpkg `registry` (i.e., via `vcpkg-configuration.json`). When consumed only as an overlay (`--x-overlay-ports`), registry packages do not need to be listed there, but listing them is harmless and keeps the template consistent for registry-style consumers.
 - Do not hardcode local paths (such as `/home/jeff/...`) inside `portfile.cmake` or `vcpkg.json`.
 - Keep `portfile.cmake` deterministic: always verify `SHA512` hashes for downloaded archives rather than bypassing hash checks.
+- Pin upstream sources to immutable references only. Prefer a release tag archive (e.g., `refs/tags/vX.Y.Z`) or a commit-id archive; never use a moving branch (e.g., `refs/heads/develop`).
 
 ## local installation of vcpkg
 
@@ -148,17 +148,26 @@ the port's `portfile.cmake` with deterministic names.
 - Do not ship unused helper files in a port directory (e.g., `vcpkg-cmake-wrapper.cmake`
   that is never installed, or commented-out dead code in `portfile.cmake`). Remove them
   or make them functional before committing.
+- Do not force a global `CMAKE_BUILD_TYPE` in common `OPTIONS`. vcpkg configures Release
+  and Debug builds separately; use `OPTIONS_RELEASE`, `OPTIONS_DEBUG`, and
+  `OPTIONS_MINSIZEREL` instead. A `CMAKE_BUILD_TYPE` override is only acceptable as a
+  platform-specific or feature-specific workaround with a `FIXME` comment.
 
-Whenever a subagent finishes or you complete a review pass, immediately write the output to disk using the `write` tool:
+## AI Runtime Artifacts
 
-- **Scout findings & observations:** Save to `.agent/reports/scout/<YYYY-MM-DD>-<topic>.md`
-- **Security reviews:** Save to `.agent/reports/security/<YYYY-MM-DD>-<scope>.md`
-- **General architectural observations:** Append to `.agent/reports/observations.md`
+Whenever a subagent finishes or you complete a review pass, immediately 
+write the output to disk using the `write` tool:
+
+- **Scout findings & observations:** Save to `.omp/reports/scout/<YYYY-MM-DD>-<topic>.md`
+- **Security reviews:** Save to `.omp/reports/security/<YYYY-MM-DD>-<scope>.md`
+- **General architectural observations:** Append to `.omp/reports/observations.md`
 
 ## Before committing checklist
 
 - format manifest
 - SHA512 verified
+- upstream source is pinned to an immutable tag or commit archive
 - port installs with intended triplet
 - verify `share/<port-name>/usage` content or a minimal consumer CMake build
+- update `docs/dependency_tree.md` if dependencies changed
 

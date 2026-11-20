@@ -330,7 +330,5 @@ pythonenv3.8/
 # AI Hidden Runtime & Scratchpad
 #################################
 
-.agent/observations/
-.agent/memory/
-.agent/security/
+.agent/reports/
 

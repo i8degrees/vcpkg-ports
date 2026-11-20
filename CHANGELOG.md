@@ -9,11 +9,11 @@ All notable changes to this custom vcpkg registry will be documented in this fil
   - Built both ports on `x64-linux`; inspected dependency trees and usage files.
   - Recorded findings in `observations.md` and a focused security review in `SECURITY_REVIEW.md`.
 - Key findings:
-  - `nomlib` pins a moving `dev` branch whose SHA512 has already drifted.
-  - `nomlib` re-enables `FETCHCONTENT_FULLY_DISCONNECTED=OFF`, allowing build-time network fetches.
-  - `librocket` forces `-DCMAKE_BUILD_TYPE=Debug`, causing Release triplets to ship Debug artifacts.
-  - `nomlib` manifest contains inert `overrides`/`builtin-baseline` and scheme-incompatible `version>=` constraints.
-  - `versions/l-/librocket.json` baseline points at `#0` while a newer `#1` entry exists.
+  - `nomlib` pins a moving `dev` branch whose SHA512 has already drifted (fixed).
+  - `nomlib` re-enables `FETCHCONTENT_FULLY_DISCONNECTED=OFF`, allowing build-time network fetches (fixed: deps pre-populated).
+  - `librocket` forces `-DCMAKE_BUILD_TYPE=Debug` globally (partially fixed: now Windows-only workaround for a `ROCKET_ASSERT` linking issue).
+  - `nomlib` manifest contains inert `overrides`/`builtin-baseline` and redundant `version>=` constraints (`version>=` removed; `overrides`/`builtin-baseline` kept as reference).
+  - `versions/l-/librocket.json` baseline points at `#0` while a newer `#1` entry exists (fixed: baseline now at `#3`).
 - No credential leaks, secrets, or injection vectors were found in the port files.
 
 ### Port fixes — `nomlib`
@@ -39,13 +39,18 @@ All notable changes to this custom vcpkg registry will be documented in this fil
 - Scoped the `-DCMAKE_BUILD_TYPE=Debug` override to Windows only, with a FIXME referencing the `ROCKET_ASSERT` macro linking issue. Linux/macOS now produce proper Release/Debug artifacts.
 - Deleted the unused `vcpkg-cmake-wrapper.cmake`.
 - Rebuilt and verified `librocket:x64-linux@1.3.0.0#3`; CMake consumer project links successfully and `lib/` contains `libRocketCore.a` instead of `libRocketCore_d.a`.
+- Built `librocket:x64-linux-dynamic@1.3.0.0#3`; release `lib/` now contains `libRocketCore.so.1.3.0.0`, etc., with correct `_d` suffix retained in debug `lib/` only.
 
 ### Documentation
 - `AGENTS.md`: reviewed and tightened port workflow guidance.
-  - Added `vcpkg.json` `$schema` recommendation.
-  - Clarified when a new port must be listed in `templates/vcpkg-configuration.json.tmpl`.
-- `SECURITY_REVIEW.md`: added repository-level security review results (table format); updated after `nomlib` fixes.
-- `observations.md`: added audit findings and build/usage verification notes (table format); updated after `nomlib` fixes.
+  - Updated `nomlib` port label to `v0.14.0`.
+  - Fixed `vcpkg.json` `$schema` URL typo.
+  - Replaced stale `vcpkg print-usage` checklist item with reading `share/<port>/usage` and a minimal consumer CMake build.
+  - Clarified minimum-supported triplets as intended targets, not guaranteed validated targets.
+  - Added convention against shipping unused helper files (e.g., `vcpkg-cmake-wrapper.cmake`) in port directories.
+  - Restored/updated artifact persistence rules and included a complete CMake consumer example for usage verification.
+- `SECURITY_REVIEW.md` (`.agent/reports/security/2026-11-16-ports.md`): added repository-level security review results (table format); updated after `nomlib` and `librocket` fixes.
+- `observations.md` (`.agent/reports/observations.md`): added audit findings and build/usage verification notes (table format); updated after `nomlib`, `librocket`, and `AGENTS.md` changes.
 
 ### Templates
 - Added `"$schema"` to `templates/vcpkg-configuration.json.tmpl` and `templates/vcpkg.json.tmpl` for validation and editor support.

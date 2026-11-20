@@ -116,13 +116,9 @@ the port's `portfile.cmake` with deterministic names.
 - Do not ship unused helper files in a port directory (e.g., `vcpkg-cmake-wrapper.cmake`
   that is never installed, or commented-out dead code in `portfile.cmake`). Remove them
   or make them functional before committing.
-
-Whenever a subagent finishes or you complete a review pass, immediately write
-the output to disk using the `write` tool:
-
-- **Scout findings & observations:** Save to `.agent/reports/scout/<YYYY-MM-DD>-<topic>.md`
-- **Security reviews:** Save to `.agent/reports/security/<YYYY-MM-DD>-<scope>.md`
-- **General architectural observations:** Append to `.agent/reports/observations.md`
+- Always save observations at `.agent/observations`
+- Always save security findings at `.agent/security`
+- Always save build artifact logs at `.agent/build`
 
 ## Before committing checklist
 

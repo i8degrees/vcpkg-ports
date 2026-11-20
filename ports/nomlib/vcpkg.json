@@ -2,24 +2,24 @@
   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
   "name": "nomlib",
   "version-semver": "0.14.0",
+  "port-version": 1,
   "maintainers": "Jeffrey Carpenter <1329364+i8degrees@users.noreply.github.com>",
   "description": "C++11 game engine",
   "homepage": "https://nomlib.479831.xyz/#",
   "documentation": "https://nomlib.479831.xyz/docs/#",
   "license": "BSD-2-Clause",
   "supports": "(osx & x64), ((linux & x64), (windows & x64))",
-  "builtin-baseline": "44819aa2a6c10e56065e2b0330e7d6c89d1d2574",
   "dependencies": [
     {
       "name": "librocket",
-      "platform": "(osx & x64), ((linux & x64), (windows & x86 & static))"
+      "platform": "(osx & x64), ((linux & x64), (windows & x64))"
     },
     {
       "name": "libsndfile",
       "features": [
         "external-libs"
       ],
-      "platform": "(osx & x64), ((linux & x64), (windows & x86 & static))"
+      "platform": "(osx & x64), ((linux & x64), (windows & x64))"
     },
     {
       "name": "openal-soft",
@@ -48,12 +48,12 @@
       "features": [
         "tiff"
       ],
-      "platform": "(osx & x64), ((linux & x64), (windows & x86 & static))"
+      "platform": "(osx & x64), ((linux & x64), (windows & x64))"
     },
     {
       "name": "sdl2-ttf",
       "default-features": false,
-      "platform": "(osx & x64), ((linux & x64), (windows & x86 & static))"
+      "platform": "(osx & x64), ((linux & x64), (windows & x64))"
     },
     {
       "name": "vcpkg-cmake",
@@ -62,24 +62,6 @@
     {
       "name": "vcpkg-cmake-config",
       "host": true
-    }
-  ],
-  "overrides": [
-    {
-      "name": "sdl2",
-      "version": "2.32.10"
-    },
-    {
-      "name": "sdl2-image",
-      "version": "2.8.12"
-    },
-    {
-      "name": "sdl2-ttf",
-      "version": "2.24.0"
-    },
-    {
-      "name": "openal-soft",
-      "version": "1.25.1#1"
     }
   ]
 }

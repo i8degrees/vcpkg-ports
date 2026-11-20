@@ -6,7 +6,7 @@ published upstream.
 
 - ports
     - [librocket][1] - v1.3.0.0 (upstream)
-    - [nomlib][2] - dev (v0.13.x)
+    - [nomlib][2] - v0.14.0
 
 [0]: https://github.com/i8degrees/vcpkg-ports
 [1]: https://github.com/libRocket/libRocket.git
@@ -24,7 +24,7 @@ published upstream.
 Whenever creating, updating, or fixing a port in `ports/<port-name>/`, execute these steps in exact order:
 
 1. **Edit Port Files**: Update `vcpkg.json` and `portfile.cmake` inside `ports/<port-name>/`.
-    - Prefer adding `"$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json.json"` to `vcpkg.json` for validation and editor support.
+    - Prefer adding `"$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json"` to `vcpkg.json` for validation and editor support.
 2. **Manage Versioning Rules**:
    - If the upstream source version changes: update `version` (or `version-semver` / `version-date`) in `vcpkg.json` and remove `port-version` (or reset it to `0`).
    - If only packaging files (`portfile.cmake`, patches, dependencies) change: keep `version` unchanged and increment `port-version` by `1`.
@@ -76,24 +76,31 @@ Before finalizing port changes, verify installation and dependency resolution us
   vcpkg depend-info <port-name> --format=tree --x-overlay-ports=./ports
   ```
 - **Verify Usage Instructions**:
-  ```bash
-  vcpkg print-usage <port-name> --x-overlay-ports=./ports
-  ```
-  - if `vcpkg print-usage` is an invalid command, the system vcpkg repo may
-  need to be updated to the latest (master) branch. The `VCPKG_ROOT` env must
-  be set to a valid path and git must be present. ALWAYS confirm with the 
-  user to perform this upgrade before doing so. Run `bootstrap-vcpkg.sh` or
-  `bootstrap-vcpkg.ps1` after performing a successful upgrade -- this is 
-  indicated by an exit code of `0` after the `git pull` AND bootstrap 
-  command.
+  - Check the generated usage file content after installation:
+    ```bash
+    cat ~/.local/share/vcpkg/installed/<triplet>/share/<port-name>/usage
+    ```
+  - Or verify in a minimal consumer CMake project with `find_package(<port-name> CONFIG REQUIRED)` and `target_link_libraries`.
 
 - **Developer Tips**:
     ```bash
     vcpkg edit <port-name>  --vcpkg-root .
     ```
+- **Minimum Supported Triplets**:
 
-- After a port in this repo is updated but before it is commited, update
-update `docs/dependency_tree.md` to reflect the stale dependency tree(s).
+- Linux ports target `x64-linux` for statically linked binaries (`.a`)
+and `x64-linux-dynamic` for dynamically linked binaries (`.so`).
+
+- macOS ports target `x64-osx` for statically linked binaries (`.a`)
+and `x64-osx-dynamic` for dynamically linked binaries (`.dylib`).
+
+- Windows ports target `x64-windows` for statically linked binaries
+(`.lib`) and `x64-windows-dynamic` for dynamically linked binaries (`.dll`)
+
+These are the intended supported triplets; individual ports may not be regularly validated on every target.
+
+- After a port in this repo is updated but before it is committed, update
+  `docs/dependency_tree.md` to reflect the current dependency tree(s).
 
 ## Consumer Templates & New Ports
 
@@ -106,7 +113,9 @@ update `docs/dependency_tree.md` to reflect the stale dependency tree(s).
 -  `versions/` files are machine-generated and must never be hand-edited.
 - patches should be minimized and upstreamed where possible, and kept next to
 the port's `portfile.cmake` with deterministic names.
-
+- Do not ship unused helper files in a port directory (e.g., `vcpkg-cmake-wrapper.cmake`
+  that is never installed, or commented-out dead code in `portfile.cmake`). Remove them
+  or make them functional before committing.
 - Always save observations at `.agent/observations`
 - Always save security findings at `.agent/security`
 - Always save build artifact logs at `.agent/build`
@@ -116,5 +125,5 @@ the port's `portfile.cmake` with deterministic names.
 - format manifest
 - SHA512 verified
 - port installs with intended triplet
-- check for sane output from `vcpkg print-usage <port>`
+- verify `share/<port-name>/usage` content or a minimal consumer CMake build
 

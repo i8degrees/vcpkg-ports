@@ -4,10 +4,10 @@
 # - The dependency `version>=` constraints were removed because every current
 #   upstream dependency uses the `version` (relaxed) scheme; the minima were
 #   valid but far below baseline versions and never constrained resolution.
-# - `builtin-baseline` and `overrides` are intentionally kept in the port
-#   manifest as reference / consumer-test metadata; vcpkg ignores them when
-#   nomlib is consumed as a dependency.
-
+# - `builtin-baseline` and `overrides` are maintained in the consumer template
+#   at `templates/vcpkg.json.tmpl`. They are not part of the port manifest
+#   because vcpkg ignores them when `nomlib` is consumed as a dependency.
+#
 set(NOM_VERSION 0.14.0)
 set(NOM_TAG "v0.14.0")
 vcpkg_download_distfile(ARCHIVE

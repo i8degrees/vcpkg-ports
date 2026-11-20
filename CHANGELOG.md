@@ -12,6 +12,7 @@ All notable changes to this custom vcpkg registry will be documented in this fil
   - `nomlib` pins a moving `dev` branch whose SHA512 has already drifted (fixed).
   - `nomlib` re-enables `FETCHCONTENT_FULLY_DISCONNECTED=OFF`, allowing build-time network fetches (fixed: deps pre-populated).
   - `librocket` forces `-DCMAKE_BUILD_TYPE=Debug` globally (partially fixed: now Windows-only workaround for a `ROCKET_ASSERT` linking issue).
+  - `nomlib` `-DDEBUG_ASSERT=ON` forced run-time assertions into release artifacts (fixed: scoped to `OPTIONS_DEBUG`).
   - `nomlib` manifest contained inert `overrides`/`builtin-baseline` and redundant `version>=` constraints; now fully removed and documented in `templates/vcpkg.json.tmpl`.
   - `versions/l-/librocket.json` baseline points at `#0` while a newer `#1` entry exists (fixed: baseline now at `#3`).
 - No credential leaks, secrets, or injection vectors were found in the port files.
@@ -22,6 +23,8 @@ All notable changes to this custom vcpkg registry will be documented in this fil
 - Added upstream patches to use FetchContent-provided source directories and to enable C language for CMake `check_c_source_compiles`.
 - Removed hardcoded `C:/Python312/python.exe`; CMake's `FindPython3` resolves from PATH.
 - Removed stale `001_fixme.patch` and `fixme.md`.
+- Acknowledged `sdl2[wayland]` on Linux as an intentional choice to avoid the X11 feature dependency chain (dbus, ibus, etc.).
+- Scoped `-DDEBUG_ASSERT=ON` to `OPTIONS_DEBUG` so release artifacts no longer include run-time assertions; debug artifacts still enable them.
 - Re-enabled `NOM_BUILD_AUDIO_UNIT` so `libnomlib-audio` is produced.
 - Added `-DNOM_USE_CCACHE=ON` to the configure options.
 - Removed the portfile comment that recorded the obsolete rationale for keeping `builtin-baseline`/`overrides` in the port manifest.
@@ -29,12 +32,12 @@ All notable changes to this custom vcpkg registry will be documented in this fil
 - Dropped redundant `version>=` constraints from dependencies. All current upstream dependencies use the `version` (relaxed) scheme, so the minima were valid but far below baseline versions and never constrained resolution; removing them avoids unused metadata.
 - Removed inert `builtin-baseline` and `overrides` from `ports/nomlib/vcpkg.json` and moved them to `templates/vcpkg.json.tmpl` so intended transitive-dependency versions are documented for consumer projects instead of being silently ignored by vcpkg.
 - Aligned `librocket`, `libsndfile`, `sdl2-image`, and `sdl2-ttf` dependency `platform` expressions with `nomlib.supports` (`windows & x64` instead of the previous impossible `windows & x86 & static` gate).
-- Bumped `nomlib` `port-version` to `1`.
+- Bumped `nomlib` `port-version` to `3`.
 - Refreshed `docs/dependency_tree.md` with current overlay-port dependency trees.
 - Bumped `nomlib` upstream version to `0.14.0` (tagged release), replacing the moving `dev` branch pin. Updated source URL, SHA512, and reset `port-version` to `0`.
 - Re-verified builds:
-  - `x64-linux` (static) — success
-  - `x64-linux-dynamic` (shared) — success
+  - `nomlib:x64-linux@0.14.0#3` (static) — success; release `CMakeCache.txt` shows `DEBUG_ASSERT:BOOL=OFF` while debug shows `DEBUG_ASSERT:BOOL=ON`.
+  - `nomlib:x64-linux-dynamic@0.14.0#3` (shared) — success; same release/debug `DEBUG_ASSERT` split confirmed.
 
 ### Port fixes — `librocket`
 - Fixed `usage` file to reference the real exported CMake targets (`RocketCore`, `RocketControls`, `RocketDebugger`) instead of non-existent `*-static` aliases, and documented the `libRocket_INCLUDE_DIRS` variable.

@@ -76,11 +76,26 @@ Before finalizing port changes, verify installation and dependency resolution us
   vcpkg depend-info <port-name> --format=tree --x-overlay-ports=./ports
   ```
 - **Verify Usage Instructions**:
-  - Check the generated usage file content after installation:
+  - Read the generated usage file after installation and confirm the targets and variables match the exported CMake config:
     ```bash
     cat ~/.local/share/vcpkg/installed/<triplet>/share/<port-name>/usage
     ```
-  - Or verify in a minimal consumer CMake project with `find_package(<port-name> CONFIG REQUIRED)` and `target_link_libraries`.
+  - Verify in a minimal consumer CMake project. Example:
+    ```cmake
+    cmake_minimum_required(VERSION 3.25)
+    project(<port-name>_consumer LANGUAGES CXX)
+    find_package(<port-name> CONFIG REQUIRED)
+    add_executable(main main.cpp)
+    target_link_libraries(main PRIVATE <target1> <target2>)
+    ```
+    Build it with:
+    ```bash
+    cmake -S . -B build \
+      -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake \
+      -DVCPKG_TARGET_TRIPLET=<triplet> \
+      -DCMAKE_BUILD_TYPE=Release
+    cmake --build build
+    ```
 
 - **Developer Tips**:
     ```bash
@@ -116,9 +131,12 @@ the port's `portfile.cmake` with deterministic names.
 - Do not ship unused helper files in a port directory (e.g., `vcpkg-cmake-wrapper.cmake`
   that is never installed, or commented-out dead code in `portfile.cmake`). Remove them
   or make them functional before committing.
-- Always save observations at `.agent/observations`
-- Always save security findings at `.agent/security`
-- Always save build artifact logs at `.agent/build`
+
+Whenever a subagent finishes or you complete a review pass, immediately write the output to disk using the `write` tool:
+
+- **Scout findings & observations:** Save to `.agent/reports/scout/<YYYY-MM-DD>-<topic>.md`
+- **Security reviews:** Save to `.agent/reports/security/<YYYY-MM-DD>-<scope>.md`
+- **General architectural observations:** Append to `.agent/reports/observations.md`
 
 ## Before committing checklist
 

@@ -123,6 +123,23 @@ These are the intended supported triplets; individual ports may not be regularly
 - Do not hardcode local paths (such as `/home/jeff/...`) inside `portfile.cmake` or `vcpkg.json`.
 - Keep `portfile.cmake` deterministic: always verify `SHA512` hashes for downloaded archives rather than bypassing hash checks.
 
+## local installation of vcpkg
+
+- This repository checks out the latest version of `vcpkg` via git submodule
+at `vendor/vcpkg`. Even if you find another existing copy of `vcpkg`, i.e.: 
+`VCPKG_ROOT`, you must disregard this and use the vendored version supplied
+here.
+
+- bootstrap of vcpkg goes like this -- from this project's repository root:
+
+
+```bash
+git submodule update --init
+git submodule sync
+vendor/vcpkg/bootstrap-vcpkg.sh
+vendor/vcpkg/vcpkg version
+```
+
 ## Conventions
 
 -  `versions/` files are machine-generated and must never be hand-edited.

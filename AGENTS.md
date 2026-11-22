@@ -16,7 +16,7 @@ published upstream.
 
 - `ports/<port-name>/`: Port definitions (`vcpkg.json`, `portfile.cmake`, patches, and `usage` files). Active ports include `librocket` and `nomlib`.
 - `versions/`: Auto-generated vcpkg version database (`baseline.json` and `<first-letter>-/<port-name>.json`). **Never edit files inside `versions/` manually.**
-- `templates/`: Consumer project templates (`vcpkg.json.tmpl` and `vcpkg-configuration.json.tmpl`).
+- `templates/`: Consumer project templates (`vcpkg.json.tmpl`, `vcpkg-configuration.json.tmpl`, and `CONSUMER.md.tmpl`).
 - `docs/`: Additional registry documentation.
 
 ## Mandatory Port Modification Workflow
@@ -34,18 +34,19 @@ Whenever creating, updating, or fixing a port in `ports/<port-name>/`, execute t
    ```
     - A successful manifest validation should be committed as part of the port change, not as a separate commit, to keep `x-add-version` tree SHAs
     consistent.
-4. **Commit Port Changes First**: `x-add-version` reads the Git tree SHA of the committed port directory. Stage and commit `ports/<port-name>/` before updating `versions/`:
+4. **Update Dependency Tree Doc**: If the port's dependencies changed, update `docs/dependency_tree.md` to reflect the current dependency tree(s) before committing.
+5. **Commit Port Changes First**: `x-add-version` reads the Git tree SHA of the committed port directory. Stage and commit `ports/<port-name>/` (plus `docs/dependency_tree.md`, if changed) before updating `versions/`:
    ```bash
    git add ports/<port-name>
    git commit -m "<port-name>: <summary of change>"
    ```
-5. **Update the Version Database**: Run from the repository root using explicit builtin flags:
+6. **Update the Version Database**: Run from the repository root using explicit builtin flags:
    ```bash
    vcpkg --x-builtin-ports-root=./ports --x-builtin-registry-versions-dir=./versions x-add-version --all --verbose
    ```
    *(If fixing an existing version entry in-place during development, append `--overwrite-version`.)*
    - `--overwrite-version` must not be used for final polished versions because it mutates the DB in place.
-6. **Commit Version Metadata**: Stage and commit the updated `versions/` directory:
+7. **Commit Version Metadata**: Stage and commit the updated `versions/` directory:
    ```bash
    git add versions
    git commit -m "versions: update <port-name>"
@@ -57,9 +58,10 @@ Before finalizing port changes, verify installation and dependency resolution us
 
 - **Reinstall & Build Test**:
   ```bash
-  vcpkg remove <port-name> --recurse --x-overlay-ports=./ports
-  vcpkg install <port-name> --x-overlay-ports=./ports
+  vcpkg remove <port-name> --recurse --x-overlay-ports=./ports --triplet=<triplet>
+  vcpkg install <port-name> --x-overlay-ports=./ports --triplet=<triplet>
   ```
+  - `<triplet>` is the triplet you intend to ship (see **Minimum Supported Triplets**).
   - For faster iterative port edits, install with `--editable`:
     `vcpkg install <port-name> --editable --x-overlay-ports=./ports --triplet=<triplet>`
   - always clear `buildtrees/` and `packages/` when the port hash does not
@@ -134,8 +136,8 @@ here.
 
 
 ```bash
-git submodule update --init
 git submodule sync
+git submodule update --init
 vendor/vcpkg/bootstrap-vcpkg.sh
 vendor/vcpkg/vcpkg version
 ```

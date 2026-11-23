@@ -79,7 +79,7 @@ Before finalizing port changes, verify installation and dependency resolution us
 - **Verify Usage Instructions**:
   - Read the generated usage file after installation and confirm the targets and variables match the exported CMake config:
     ```bash
-    cat ~/.local/share/vcpkg/installed/<triplet>/share/<port-name>/usage
+    cat vendor/vcpkg/vcpkg/installed/<triplet>/share/<port-name>/usage
     ```
   - Verify in a minimal consumer CMake project. Example:
     ```cmake
@@ -139,6 +139,10 @@ here.
 git submodule sync
 git submodule update --init
 vendor/vcpkg/bootstrap-vcpkg.sh
+```
+Use vcpkg like this:
+
+```bash
 vendor/vcpkg/vcpkg version
 ```
 

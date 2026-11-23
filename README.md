@@ -4,14 +4,52 @@ My private vcpkg registry for ports that have not been published [upstream][0].
 
 - ports
     - `librocket` - v1.3.0.0 (upstream)
-    - `nomlib` - WIP (v0.13.x)
+    - `nomlib` - WIP (v0.14.x)
 
-- templates
+- templates for consumers of the ports listed above
     - `vcpkg-configuration.json.tmpl`
     - `vcpkg.json.tmpl`
     - `CONSUMER.md.tmpl`
 
 ## usage
+
+This ports repository checks out the latest version of `vcpkg` via *git
+submodule* at `vendor/vcpkg`. All references to `vcpkg` below should use the full path to `vcpkg` for
+operations related to this repository.
+
+**IMPORTANT**: I chose this particular setup for a particular reason --
+concurrency across multiple projects that all use `vcpkg` for their
+dependencies will compete for the same instance installed system-wide. The
+way around this is to use independent copies of `vcpkg` checked out by each
+project as a git submodule in order to allow more than one build at a time.
+
+### setup
+
+The following instructions are the recipe for how to ensure that this
+repository is set up correctly for further development:
+
+```bash
+git submodule sync
+git submodule update --init
+vendor/vcpkg/bootstrap-vcpkg.sh
+```
+
+Then, use `vcpkg` like this (without `VCPKG_ROOT`):
+
+```bash
+vendor/vcpkg/vcpkg version
+```
+Or, with `VCPKG_ROOT` set in an individual shell:
+
+```bash
+export VCPKG_ROOT=<absolute_path_to_repo>/vendor/vcpkg
+vcpkg
+```
+
+Never set `VCPKG_ROOT` in your shell's `.profile` or `.bashrc` unless you
+only have one instance where `vcpkg` concerns you (and not more than one
+project that you are actively developing that uses one or more of the ports
+found in this repository).
 
 - see also
     - [vcpkg: publish to a git repository](https://learn.microsoft.com/en-us/vcpkg/produce/publish-to-a-git-registry)

@@ -14,12 +14,13 @@ vcpkg_extract_source_archive_ex(
   PATCHES
     001_backport-cmake-config.patch
     002_remove-i386-osx-arch.patch
+    003_cmake-config-fixups.patch
 )
 
 # FIXME: Feature selection is not yet supported
 vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
   FEATURES
-  python          "BUILD_PYTHON_BINDINGS=ON"
+  python          "BUILD_PYTHON_BINDINGS=OFF"
 )
 
 # FIXME(JEFF): We must use the DEBUG build configuration on Windows until we
@@ -35,7 +36,6 @@ vcpkg_cmake_configure(
   SOURCE_PATH "${BASE_SOURCE_PATH}/Build"
     OPTIONS
       ${FEATURE_OPTIONS}
-      "-DBUILD_PYTHON_BINDINGS=OFF"
       ${LIBROCKET_EXTRA_CMAKE_OPTIONS}
       "-DCMAKE_CXX_STANDARD=14"
       "-DCMAKE_CXX_STANDARD_REQUIRED=ON"

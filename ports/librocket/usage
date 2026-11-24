@@ -1,4 +1,3 @@
-
 libRocket provides CMake import targets:
 
     find_package(libRocket CONFIG REQUIRED)
@@ -9,7 +8,8 @@ libRocket provides CMake import targets:
       RocketDebugger
     )
 
-libRocket also sets the include search path variable:
+The import targets carry the include search path, so no additional
+include_directories() call is required. The config also sets the include
+search path variable:
 
-    include_directories(${libRocket_INCLUDE_DIRS})
-
+    libRocket_INCLUDE_DIRS

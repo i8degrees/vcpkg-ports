@@ -1,8 +1,17 @@
 diff --git c/Build/CMakeLists.txt w/Build/CMakeLists.txt
-index 2b38364..aa7065d 100755
+index 2b38364..d69b699 100755
 --- c/Build/CMakeLists.txt
 +++ w/Build/CMakeLists.txt
-@@ -140,6 +140,7 @@ foreach(library ${LIBRARIES})
+@@ -131,6 +131,8 @@ foreach(library ${LIBRARIES})
+     set_target_properties(${NAME} PROPERTIES
+                            VERSION ${PROJECT_VERSION}
+                            SOVERSION ${LIBROCKET_VERSION_MAJOR}
++                           INTERFACE_INCLUDE_DIRECTORIES
++                           "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/Include>$<INSTALL_INTERFACE:include>"
+     )
+     
+     if(APPLE)
+@@ -140,6 +142,7 @@ foreach(library ${LIBRARIES})
      endif()
  
      install(TARGETS ${NAME}
@@ -10,7 +19,20 @@ index 2b38364..aa7065d 100755
              LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
              ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
              RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-@@ -335,3 +336,50 @@ if(BUILD_SAMPLES)
+@@ -171,6 +174,12 @@ endif()
+ # Link libraries ===================
+ #===================================
+ 
++# Targets referenced by the generated libRocketConfig.cmake files
++set(ROCKET_EXPORTED_TARGETS
++    RocketCore
++    RocketControls
++    RocketDebugger)
++
+ target_link_libraries(RocketCore ${CORE_LINK_LIBS})
+ target_link_libraries(RocketControls RocketCore)
+ target_link_libraries(RocketDebugger RocketCore)
+@@ -335,3 +344,50 @@ if(BUILD_SAMPLES)
              DESTINATION ${SAMPLES_DIR}
      )
  endif()

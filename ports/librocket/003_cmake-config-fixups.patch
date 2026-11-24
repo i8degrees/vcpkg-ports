@@ -1,0 +1,15 @@
+diff --git c/Build/CMakeLists.txt w/Build/CMakeLists.txt
+index 8590117..c41b01a 100755
+--- c/Build/CMakeLists.txt
++++ w/Build/CMakeLists.txt
+@@ -21,6 +21,10 @@ set(LIBROCKET_VERSION_PATCH 0)
+ set(LIBROCKET_VERSION_TWEAK 0)
+ set(PROJECT_VERSION ${LIBROCKET_VERSION_MAJOR}.${LIBROCKET_VERSION_MINOR}.${LIBROCKET_VERSION_PATCH}.${LIBROCKET_VERSION_TWEAK})
+ 
++# Override the "custom" fallback in Source/Core/Core.cpp so that
++# Rocket::Core::GetVersion() reports the release version
++add_definitions(-DROCKET_VERSION=\"${PROJECT_VERSION}\")
++
+ # Search in the 'cmake' directory for additional CMake modules.
+ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+ 

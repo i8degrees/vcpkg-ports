@@ -46,6 +46,14 @@ All notable changes to this custom vcpkg registry will be documented in this fil
 - Deleted the unused `vcpkg-cmake-wrapper.cmake`.
 - Rebuilt and verified `librocket:x64-linux@1.3.0.0#3`; CMake consumer project links successfully and `lib/` contains `libRocketCore.a` instead of `libRocketCore_d.a`.
 - Built `librocket:x64-linux-dynamic@1.3.0.0#3`; release `lib/` now contains `libRocketCore.so.1.3.0.0`, etc., with correct `_d` suffix retained in debug `lib/` only.
+- Fixed the generated CMake package in `001_backport-cmake-config.patch`:
+  - `ROCKET_EXPORTED_TARGETS` is now set, so the installed `libRocketConfig.cmake` lists `RocketCore;RocketControls;RocketDebugger` in `libRocket_LIBRARIES` instead of an empty value, and the build-tree `export(TARGETS ...)` no longer exports an empty target set.
+  - Each library target now sets `INTERFACE_INCLUDE_DIRECTORIES` via `$<BUILD_INTERFACE:...>`/`$<INSTALL_INTERFACE:include>`, so the installed import targets carry `INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"` and consumers no longer need a manual `include_directories()` call.
+- Added `003_cmake-config-fixups.patch`, which defines the `ROCKET_VERSION` preprocessor macro (`add_definitions(-DROCKET_VERSION=\"${PROJECT_VERSION}\")`). `Rocket::Core::GetVersion()` now reports `1.3.0.0` instead of the upstream fallback `"custom"`. The portfile's `-DROCKET_VERSION=${LIBROCKET_VERSION}` was a no-op CMake variable and has been removed.
+- Fixed the `python` feature option, which was specified twice (`BUILD_PYTHON_BINDINGS=ON` from the feature table followed by a hardcoded `-DBUILD_PYTHON_BINDINGS=OFF`, so the hardcoded value always won); the option is now specified once. The feature itself remains non-functional because it depends on the `python2` port, which no longer exists upstream.
+- Updated the `usage` file: the import targets now provide the include search path, so the manual `include_directories(${libRocket_INCLUDE_DIRS})` step is no longer required.
+- Bumped `librocket` `port-version` to `4`.
+- Re-verified `librocket:x64-linux` after the changes: install succeeds, `libRocketConfig.cmake` lists all three targets, all three import targets carry `INTERFACE_INCLUDE_DIRECTORIES`, and a minimal consumer project compiles against `find_package(libRocket CONFIG REQUIRED)` and prints `1.3.0.0` from `Rocket::Core::GetVersion()`.
 
 ### Documentation
 - `AGENTS.md`: reviewed and tightened port workflow guidance.
